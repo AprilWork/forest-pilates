@@ -58,7 +58,7 @@ public class GroupsDAO {
 		try {
 			group = (Group) session.createQuery(queryString).getSingleResult();
 		} catch (Exception e) {
-			// TODO: handle exception
+			// TODO: handle exception  GroupsDAO
 			return null;
 		}
 		session.getTransaction().commit();		
@@ -69,6 +69,7 @@ public class GroupsDAO {
 		Session session = factory.getCurrentSession();
 		session.beginTransaction();
 		String queryString = "from classes where name = '"+name+"'";
+		@SuppressWarnings("unchecked")
 		List<Group> groups = session.createQuery(queryString).getResultList();
 		if (groups.isEmpty()) {
 			return false;
