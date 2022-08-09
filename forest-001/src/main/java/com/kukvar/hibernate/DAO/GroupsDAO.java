@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import com.kukvar.hibernate.entity.Customers;
 import com.kukvar.hibernate.entity.Group;
 
 
@@ -49,10 +50,26 @@ public class GroupsDAO {
 		return group;
 	}	
 	
+	public Group getGroup(String name) {
+		Session session = factory.getCurrentSession();
+		session.beginTransaction();
+		String queryString = "from classes where name = '"+name+"'";
+		Group group;
+		try {
+			group = (Group) session.createQuery(queryString).getSingleResult();
+		} catch (Exception e) {
+			// TODO: handle exception  GroupsDAO
+			return null;
+		}
+		session.getTransaction().commit();		
+		return group;
+	}
+	
 	public boolean isExisted(String name) {
 		Session session = factory.getCurrentSession();
 		session.beginTransaction();
 		String queryString = "from classes where name = '"+name+"'";
+		@SuppressWarnings("unchecked")
 		List<Group> groups = session.createQuery(queryString).getResultList();
 		if (groups.isEmpty()) {
 			return false;

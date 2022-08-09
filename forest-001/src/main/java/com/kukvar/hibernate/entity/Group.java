@@ -8,6 +8,8 @@ import javax.persistence.Table;
 @Entity(name="classes")
 @Table(name="classes")
 public class Group {
+	static final String DEFAULT_IMAGE = "default.jpg";
+	
 	@Id
 	@Column(name="id")
 	private int id;
@@ -25,20 +27,26 @@ public class Group {
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.nameImageFile = nameImageFile;
+		this.nameImageFile = imageNameHelper(nameImageFile);
 	}
 
 	public Group(String name, String description, String nameImageFile) {
 		super();
 		this.name = name;
 		this.description = description;
-		this.nameImageFile = nameImageFile;
+		this.nameImageFile = imageNameHelper(nameImageFile);
 	}
 	
 	public Group(String name, String description) {
 		super();
 		this.name = name;
 		this.description = description;
+		this.nameImageFile = imageNameHelper("");
+	}
+	
+	private String imageNameHelper(String image) {
+		if (image == null || image.isBlank()) { return "default.jpg"; }
+		else return image;
 	}
 
 	public int getId() {
