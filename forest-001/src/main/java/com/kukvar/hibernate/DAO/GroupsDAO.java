@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import com.kukvar.hibernate.entity.Customers;
 import com.kukvar.hibernate.entity.Group;
 
 
@@ -48,6 +49,21 @@ public class GroupsDAO {
 		session.getTransaction().commit();		
 		return group;
 	}	
+	
+	public Group getGroup(String name) {
+		Session session = factory.getCurrentSession();
+		session.beginTransaction();
+		String queryString = "from classes where name = '"+name+"'";
+		Group group;
+		try {
+			group = (Group) session.createQuery(queryString).getSingleResult();
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+		session.getTransaction().commit();		
+		return group;
+	}
 	
 	public boolean isExisted(String name) {
 		Session session = factory.getCurrentSession();
