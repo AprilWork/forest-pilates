@@ -6,7 +6,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import com.kukvar.hibernate.entity.Customers;
 import com.kukvar.hibernate.entity.Group;
 
 
@@ -26,6 +25,7 @@ public class GroupsDAO {
 	public List<Group> listGroups() {
 		Session session = factory.getCurrentSession();
 		session.beginTransaction();
+		@SuppressWarnings("unchecked")
 		List<Group> groups = session.createQuery("from classes").getResultList();
 		//session.getTransaction().commit();
 		return groups;

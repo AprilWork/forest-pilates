@@ -27,6 +27,7 @@ public class FilesDAO {
 	public List<Files> listFiles() {
 		Session session = factory.getCurrentSession();
 		session.beginTransaction();
+		@SuppressWarnings("unchecked")
 		List<Files> files = session.createQuery("from files").getResultList();
 		//session.getTransaction().commit();
 		return files;
