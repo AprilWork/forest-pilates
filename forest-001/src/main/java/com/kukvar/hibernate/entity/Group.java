@@ -22,12 +22,29 @@ public class Group {
 	
 	protected Group() {	}
 
-	protected Group(int id, String name, String description, String nameImageFile) {
+	public Group(int id, String name, String description, String nameImageFile) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.nameImageFile = imageNameHelper(nameImageFile);
+	}
+
+	
+	
+	public Group(int id, String name, String description) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+	}
+	
+	
+
+	public Group(int id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
 	}
 
 	public Group(String name, String description, String nameImageFile) {

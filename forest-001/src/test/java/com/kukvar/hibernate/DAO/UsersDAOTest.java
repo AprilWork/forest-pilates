@@ -29,16 +29,10 @@ class UsersDAOTest {
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		testedCustomer = new Customers(TESTED_EMAIL,"Peter Balda","balda");
-		testedCustomerDelete = new Customers(TESTED_EMAIL_DELETE,"Peter Balda Young","balda");				
-		try {
-			new UsersDAO().addCustomersDetails(testedCustomer);
-			new UsersDAO().addCustomersDetails(testedCustomerDelete);
-		} catch (Exception e) {
-			System.out.println("BeforeEach: "+e);
-		}
-		id = new UsersDAO().getCustomer(TESTED_EMAIL).getId();
-		id_delete = new UsersDAO().getCustomer(TESTED_EMAIL_DELETE).getId();
+		id = 20;
+		id_delete = 120;
+		testedCustomer = new Customers(id,TESTED_EMAIL,"Peter Balda","balda");
+		testedCustomerDelete = new Customers(id_delete,TESTED_EMAIL_DELETE,"Peter Balda Young","balda");				
 	}
 
 	@AfterEach
@@ -53,12 +47,8 @@ class UsersDAOTest {
 	
 	@Test
 	final void testAddCustomersDetails() {
-		String email = "TESTED_EMAIL";
-		Customers customer = new Customers(email,"Peter Balda","balda");
-		new UsersDAO().addCustomersDetails(customer);
-		assertNotNull(new UsersDAO().getCustomer(email), "The customer not added.");
-		int id = new UsersDAO().getCustomer(email).getId();
-		new UsersDAO().deleteCustomer(id);
+		new UsersDAO().addCustomersDetails(testedCustomer);
+		assertNotNull(new UsersDAO().getCustomer(TESTED_EMAIL), "The customer not added.");
 	}
 
 	@Test
@@ -69,19 +59,21 @@ class UsersDAOTest {
 
 	@Test
 	final void testUpdateInformation() {
-		
+		new UsersDAO().addCustomersDetails(testedCustomer);
 		new UsersDAO().updateInformation(id, TESTED_EMAIL, "Maria Balda");
 		assertEquals("Maria Balda", new UsersDAO().getCustomer(id).getUsername(),"The user's name do not updated.");
 	}
 
 	@Test
 	final void testGetCustomer() {
+		new UsersDAO().addCustomersDetails(testedCustomer);
 		assertNotNull(new UsersDAO().getCustomer(id), "Do not return class Customers.");
 		assertEquals(id, new UsersDAO().getCustomer(id).getId(),"Return wrong Customers id");
 	}
 	
 	@Test
 	final void testGetCustomerViaEmail() {
+		new UsersDAO().addCustomersDetails(testedCustomer);
 		assertNotNull(new UsersDAO().getCustomer(TESTED_EMAIL), "Do not return class Customers.");
 		assertEquals(TESTED_EMAIL, new UsersDAO().getCustomer(TESTED_EMAIL).getEmail(),"Return wrong Customer");		
 			
@@ -89,6 +81,7 @@ class UsersDAOTest {
 	
 	@Test
 	final void testIsExisted() {
+		new UsersDAO().addCustomersDetails(testedCustomer);
 		assertTrue(new UsersDAO().isExisted(TESTED_EMAIL),"A user existed but returned not existed result.");		
 	}
 
