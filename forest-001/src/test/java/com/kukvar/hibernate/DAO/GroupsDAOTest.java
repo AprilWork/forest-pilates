@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.params.provider.NullAndEmptySource;
 //import org.junit.jupiter.params.provider.ValueSource;
 
-import com.kukvar.hibernate.entity.Customers;
 import com.kukvar.hibernate.entity.Group;
 
 class GroupsDAOTest {
