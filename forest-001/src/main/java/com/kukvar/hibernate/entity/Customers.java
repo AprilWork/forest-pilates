@@ -22,6 +22,18 @@ public class Customers {
 	
 	public Customers() {	}
 
+	
+	
+	public Customers(int id, String email, String username, String password) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.username = username;
+		this.password = password;
+	}
+
+
+
 	public Customers(String email, String username, String password) {
 		super();
 		this.email = email;
