@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.kukvar.hibernate.entity.Category;
-import com.kukvar.hibernate.entity.Customers;
 
 class CategoryDAOTest {
 	private static final String TESTED_CATEGORY_NAME = "Tested";
@@ -43,7 +42,6 @@ class CategoryDAOTest {
 			new CategoryDAO().deleteCategory(id);
 			new CategoryDAO().deleteCategory(id_delete);
 		} catch (Exception e) {
-			System.out.println("AfterEach: "+e);
 		}
 		
 	}
