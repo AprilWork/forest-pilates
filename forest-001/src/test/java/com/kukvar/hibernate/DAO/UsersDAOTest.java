@@ -41,7 +41,6 @@ class UsersDAOTest {
 			new UsersDAO().deleteCustomer(id);
 			new UsersDAO().deleteCustomer(id_delete);
 		} catch (Exception e) {
-			System.out.println("AfterEach: "+e);
 		}
 	}
 	

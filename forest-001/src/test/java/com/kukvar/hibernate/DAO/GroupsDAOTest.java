@@ -45,7 +45,6 @@ Group testedGroup1, testedGroupDelete;
 			new GroupsDAO().deleteGroup(idGroup1);
 			new GroupsDAO().deleteGroup(id_delete);
 		} catch (Exception e) {
-			System.out.println("AfterEach: "+e);
 		}
 	}
 
