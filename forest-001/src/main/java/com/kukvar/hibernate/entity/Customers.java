@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -11,6 +13,7 @@ import javax.persistence.Table;
 @Table(name="users")
 public class Customers {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Column(name="id")
 	private int id;
 	@Column(name="email")
@@ -21,18 +24,6 @@ public class Customers {
 	private String password;
 	
 	public Customers() {	}
-
-	
-	
-	public Customers(int id, String email, String username, String password) {
-		super();
-		this.id = id;
-		this.email = email;
-		this.username = username;
-		this.password = password;
-	}
-
-
 
 	public Customers(String email, String username, String password) {
 		super();
