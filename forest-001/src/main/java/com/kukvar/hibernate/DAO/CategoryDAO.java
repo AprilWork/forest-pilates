@@ -1,7 +1,6 @@
 package com.kukvar.hibernate.DAO;
 
 import java.util.List;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import com.kukvar.hibernate.entity.Category;
@@ -10,12 +9,13 @@ import com.kukvar.utils.HibernateUtil;
 public class CategoryDAO {
 	private SessionFactory factory = HibernateUtil.getSessionFactory();
 	
-	public void addCategoryDetails(Category category) {
+	public int addCategoryDetails(Category category) {
 		Session session = factory.openSession();
 		session.beginTransaction();
-		session.save(category);
+		int id = (int) session.save(category);
 		session.getTransaction().commit();
 		session.close();
+		return id;
 	}	
 	
 	public List<Category> listCategory() {
