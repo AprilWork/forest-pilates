@@ -10,12 +10,13 @@ import com.kukvar.utils.HibernateUtil;
 public class GroupsDAO {
 	SessionFactory factory = HibernateUtil.getSessionFactory();
 	
-	public void addGroupDetails(Group group) {
+	public int addGroupDetails(Group group) {
 		Session session = factory.openSession();
 		session.beginTransaction();
-		session.save(group);
+		int id = (int) session.save(group);
 		session.getTransaction().commit();
 		session.close();
+		return id;
 	}	
 	
 	public List<Group> listGroups() {
