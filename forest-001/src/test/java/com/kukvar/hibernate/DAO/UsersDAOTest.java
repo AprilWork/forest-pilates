@@ -17,9 +17,11 @@ import com.kukvar.hibernate.entity.User;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UsersDAOTest {
-	private static final String EMAIL = "balda1@yahoo.com";
-	private static User testedCustomer = new User(EMAIL,"Peter Balda","balda");
-	int id;
+	private static final String EMAIL = "tester@yahoo.com";
+	private static final String NAME = "Peter Tester";
+	private static final String PASSWORD = "test";
+	private User testedCustomer = new User(EMAIL,NAME,PASSWORD);
+	static int id;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -74,8 +76,8 @@ class UsersDAOTest {
 	@Test
 	@Order(6)
 	final void testUpdateInformation() {
-		new UsersDAO().updateInformation(id, EMAIL, "Maria Balda");
-		assertEquals("Maria Balda", new UsersDAO().getUser(id).getUsername(),"The user's name do not updated.");
+		new UsersDAO().updateInformation(id, EMAIL, NAME+1);
+		assertEquals(NAME+1, new UsersDAO().getUser(id).getUsername(),"The user's name do not updated.");
 	}
 
 	@Test
