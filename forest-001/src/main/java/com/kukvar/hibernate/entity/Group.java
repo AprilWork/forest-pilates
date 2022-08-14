@@ -2,6 +2,8 @@ package com.kukvar.hibernate.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -11,6 +13,7 @@ public class Group {
 	static final String DEFAULT_IMAGE = "default.jpg";
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
 	@Column(name="name")
@@ -21,31 +24,6 @@ public class Group {
 	private String nameImageFile;
 	
 	protected Group() {	}
-
-	public Group(int id, String name, String description, String nameImageFile) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.nameImageFile = imageNameHelper(nameImageFile);
-	}
-
-	
-	
-	public Group(int id, String name, String description) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.description = description;
-	}
-	
-	
-
-	public Group(int id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
 
 	public Group(String name, String description, String nameImageFile) {
 		super();
