@@ -4,50 +4,50 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-
 import com.kukvar.hibernate.entity.Category;
+import com.kukvar.utils.HibernateUtil;
 
 public class CategoryDAO {
-	SessionFactory factory = new Configuration()
-			.configure("hibernate.cfg.xml")
-			.addAnnotatedClass(Category.class)
-			.buildSessionFactory();
+	private SessionFactory factory = HibernateUtil.getSessionFactory();
 	
 	public void addCategoryDetails(Category category) {
-		Session session = factory.getCurrentSession();
+		Session session = factory.openSession();
 		session.beginTransaction();
 		session.save(category);
 		session.getTransaction().commit();
+		session.close();
 	}	
 	
 	public List<Category> listCategory() {
-		Session session = factory.getCurrentSession();
+		Session session = factory.openSession();
 		session.beginTransaction();
 		@SuppressWarnings("unchecked")
 		List<Category> category = session.createQuery("from class_type").getResultList();
-		//session.getTransaction().commit();
+		session.getTransaction().commit();
+		session.close();
 		return category;
 	}	
 	
 	public void updateInformation(int id, String name) {
-		Session session = factory.getCurrentSession();
+		Session session = factory.openSession();
 		session.beginTransaction();
 		Category Category = session.get(Category.class, id);
 		Category.setName(name);
 		session.getTransaction().commit();
+		session.close();
 	}	
 	
 	public Category getCategory(int id) {
-		Session session = factory.getCurrentSession();
+		Session session = factory.openSession();
 		session.beginTransaction();
 		Category category = session.get(Category.class, id);
-		session.getTransaction().commit();		
+		session.getTransaction().commit();
+		session.close();
 		return category;
 	}	
 	
 	public Category getCategory(String name) {
-		Session session = factory.getCurrentSession();
+		Session session = factory.openSession();
 		session.beginTransaction();
 		String queryString = "from class_type where name = '"+name+"'";
 		Category category;
@@ -57,15 +57,18 @@ public class CategoryDAO {
 			// TODO: handle exception
 			return null;
 		}
-		session.getTransaction().commit();		
+		session.getTransaction().commit();
+		session.close();
 		return category;
 	}
 	
 	public boolean isExisted(String name) {
-		Session session = factory.getCurrentSession();
+		Session session = factory.openSession();
 		session.beginTransaction();
 		String queryString = "from class_type where name = '"+name+"'";
 		int size =  session.createQuery(queryString).getResultList().size();
+		session.getTransaction().commit();
+		session.close();
 		if (size == 0) {
 			return false;
 		} else {
@@ -74,13 +77,14 @@ public class CategoryDAO {
 	}	
 	
 	public void deleteCategory(int id) {
-		Session session = factory.getCurrentSession();
-		session.beginTransaction();		
+		Session session = factory.openSession();
+		session.beginTransaction();
 		Category category = session.get(Category.class, id);
 		if (category != null) {
 			session.delete(category);
-			session.getTransaction().commit();
 		}
+		session.getTransaction().commit();
+		session.close();
 	}
 	
 }

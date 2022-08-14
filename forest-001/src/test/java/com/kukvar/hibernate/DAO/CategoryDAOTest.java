@@ -3,7 +3,6 @@ package com.kukvar.hibernate.DAO;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -42,8 +41,8 @@ class CategoryDAOTest {
 			new CategoryDAO().deleteCategory(id);
 			new CategoryDAO().deleteCategory(id_delete);
 		} catch (Exception e) {
+			e.getStackTrace();
 		}
-		
 	}
 
 	@Test
