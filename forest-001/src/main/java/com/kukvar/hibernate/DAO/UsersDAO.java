@@ -4,63 +4,64 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import com.kukvar.hibernate.entity.Customers;
+import com.kukvar.hibernate.entity.User;
 import com.kukvar.utils.HibernateUtil;
 
 public class UsersDAO {
 	SessionFactory factory = HibernateUtil.getSessionFactory();
 	
-	public void addCustomersDetails(Customers customer) {
+	public int addUserDetails(User user) {
 		Session session = factory.openSession();
 		session.beginTransaction();
-		session.save(customer);
+		int id = (int) session.save(user);
 		session.getTransaction().commit();
 		session.close();
+		return id;
 	}	
 	
-	public List<Customers> listCustomers() {
+	public List<User> listUsers() {
 		Session session = factory.openSession();
 		session.beginTransaction();
 		@SuppressWarnings("unchecked")
-		List<Customers> customers = session.createQuery("from users").getResultList();
+		List<User> users = session.createQuery("from users").getResultList();
 		session.getTransaction().commit();
 		session.close();
-		return customers;
+		return users;
 	}	
 	
 	public void updateInformation(int id, String email, String username) {
 		Session session = factory.openSession();
 		session.beginTransaction();
-		Customers customer = session.get(Customers.class, id);
-		customer.setEmail(email);
-		customer.setUsername(username);
+		User user = session.get(User.class, id);
+		user.setEmail(email);
+		user.setUsername(username);
 		session.getTransaction().commit();
 		session.close();
 	}	
 	
-	public Customers getCustomer(int id) {
+	public User getUser(int id) {
 		Session session = factory.openSession();
 		session.beginTransaction();
-		Customers customer = session.get(Customers.class, id);
+		User user = session.get(User.class, id);
 		session.getTransaction().commit();
 		session.close();
-		return customer;
+		return user;
 	}	
 	
-	public Customers getCustomer(String email) {
+	public User getUser(String email) {
 		Session session = factory.openSession();
 		session.beginTransaction();
 		String queryString = "from users where email = '"+email+"'";
-		Customers customer;
+		User user;
 		try {
-			customer = (Customers) session.createQuery(queryString).getSingleResult();
+			user = (User) session.createQuery(queryString).getSingleResult();
 		} catch (Exception e) {
 			// TODO: handle exception
 			return null;
 		}
 		session.getTransaction().commit();
 		session.close();
-		return customer;
+		return user;
 	}
 	
 	public boolean isExisted(String email) {
@@ -76,12 +77,12 @@ public class UsersDAO {
 		}
 	}	
 	
-	public void deleteCustomer(int id) {
+	public void deleteUser(int id) {
 		Session session = factory.openSession();
 		session.beginTransaction();		
-		Customers customer = session.get(Customers.class, id);
-		if (customer != null) {
-			session.delete(customer);
+		User user = session.get(User.class, id);
+		if (user != null) {
+			session.delete(user);
 		}
 		session.getTransaction().commit();
 		session.close();
