@@ -8,16 +8,18 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
-import com.kukvar.hibernate.entity.Customers;
+import com.kukvar.hibernate.entity.User;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UsersDAOTest {
-	private static final String TESTED_EMAIL = "balda1@yahoo.com";
-	private static Customers testedCustomer;
-	private static final String TESTED_EMAIL_DELETE = "balda2@yahoo.com";
-	private static Customers testedCustomerDelete;
-	int id, id_delete;
+	private static final String EMAIL = "balda1@yahoo.com";
+	private static User testedCustomer = new User(EMAIL,"Peter Balda","balda");
+	int id;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -29,66 +31,58 @@ class UsersDAOTest {
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		id = 20;
-		id_delete = 120;
-		testedCustomer = new Customers(id,TESTED_EMAIL,"Peter Balda","balda");
-		testedCustomerDelete = new Customers(id_delete,TESTED_EMAIL_DELETE,"Peter Balda Young","balda");				
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-		try {
-			new UsersDAO().deleteCustomer(id);
-			new UsersDAO().deleteCustomer(id_delete);
-		} catch (Exception e) {
-		}
 	}
 	
 	@Test
-	final void testAddCustomersDetails() {
-		new UsersDAO().addCustomersDetails(testedCustomer);
-		assertNotNull(new UsersDAO().getCustomer(TESTED_EMAIL), "The customer not added.");
+	@Order(1)
+	final void testAddUserDetails() {
+		id = new UsersDAO().addUserDetails(testedCustomer);
+		assertNotNull(new UsersDAO().getUser(id), "The user not added.");
 	}
 
 	@Test
-	final void testListCustomers() {
-		List<Customers> customers = new UsersDAO().listCustomers();
-		assertNotNull(customers, "The customers list do not returned.");
+	@Order(2)
+	final void testListUsers() {
+		List<User> users = new UsersDAO().listUsers();
+		assertNotNull(users, "The users list do not returned.");
 	}
 
 	@Test
-	final void testUpdateInformation() {
-		new UsersDAO().addCustomersDetails(testedCustomer);
-		new UsersDAO().updateInformation(id, TESTED_EMAIL, "Maria Balda");
-		assertEquals("Maria Balda", new UsersDAO().getCustomer(id).getUsername(),"The user's name do not updated.");
-	}
-
-	@Test
-	final void testGetCustomer() {
-		new UsersDAO().addCustomersDetails(testedCustomer);
-		assertNotNull(new UsersDAO().getCustomer(id), "Do not return class Customers.");
-		assertEquals(id, new UsersDAO().getCustomer(id).getId(),"Return wrong Customers id");
-	}
-	
-	@Test
-	final void testGetCustomerViaEmail() {
-		new UsersDAO().addCustomersDetails(testedCustomer);
-		assertNotNull(new UsersDAO().getCustomer(TESTED_EMAIL), "Do not return class Customers.");
-		assertEquals(TESTED_EMAIL, new UsersDAO().getCustomer(TESTED_EMAIL).getEmail(),"Return wrong Customer");		
-			
-	}
-	
-	@Test
+	@Order(3)
 	final void testIsExisted() {
-		new UsersDAO().addCustomersDetails(testedCustomer);
-		assertTrue(new UsersDAO().isExisted(TESTED_EMAIL),"A user existed but returned not existed result.");		
+		assertTrue(new UsersDAO().isExisted(EMAIL),"A user existed but returned not existed result.");		
+	}
+	
+	@Test
+	@Order(4)
+	final void testGetUserViaEmail() {
+		assertNotNull(new UsersDAO().getUser(EMAIL), "User do not returned.");
+		assertEquals(EMAIL, new UsersDAO().getUser(EMAIL).getEmail(),"Return wrong user");		
+	}	
+
+	@Test
+	@Order(5)
+	final void testGetCustomer() {
+		assertNotNull(new UsersDAO().getUser(id), "User do not returned.");
+		assertEquals(id, new UsersDAO().getUser(id).getId(),"Returned wrong user id");
+	}	
+	
+	@Test
+	@Order(6)
+	final void testUpdateInformation() {
+		new UsersDAO().updateInformation(id, EMAIL, "Maria Balda");
+		assertEquals("Maria Balda", new UsersDAO().getUser(id).getUsername(),"The user's name do not updated.");
 	}
 
 	@Test
+	@Order(7)
 	final void testDeleteCustomer() {
-		new UsersDAO().deleteCustomer(id_delete);
-		testedCustomerDelete = new UsersDAO().getCustomer(id_delete);
-		assertTrue(testedCustomerDelete == null, "The user do not deleted.");	
+		new UsersDAO().deleteUser(id);
+		assertNull(new UsersDAO().getUser(id), "The user do not deleted.");	
 	}
 
 }
