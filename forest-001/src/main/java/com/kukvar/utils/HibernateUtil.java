@@ -9,6 +9,7 @@ import org.hibernate.cfg.Configuration;
 
 import com.kukvar.hibernate.entity.Category;
 import com.kukvar.hibernate.entity.Customers;
+import com.kukvar.hibernate.entity.Files;
 import com.kukvar.hibernate.entity.Group;
 
 public class HibernateUtil {
@@ -22,7 +23,8 @@ public class HibernateUtil {
         			.configure("hibernate.cfg.xml")
         			.addAnnotatedClass(Group.class)
         			.addAnnotatedClass(Category.class)
-        			.addAnnotatedClass(Customers.class);
+        			.addAnnotatedClass(Customers.class)
+        			.addAnnotatedClass(Files.class);
           return configuration.buildSessionFactory();  
         }
         catch (Throwable ex) {
