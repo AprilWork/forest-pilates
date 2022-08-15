@@ -1,21 +1,41 @@
 package com.kukvar.hibernate.DAO;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
 import com.kukvar.hibernate.entity.User;
 import com.kukvar.hibernate.utils.HibernateUtil;
 
 public class UsersDAO {
 	SessionFactory factory = HibernateUtil.getSessionFactory();
 	
-	public int addUserDetails(User user) {
+	public int addUserDetails(User user) throws SQLIntegrityConstraintViolationException {
 		Session session = factory.openSession();
-		session.beginTransaction();
-		int id = (int) session.save(user);
-		session.getTransaction().commit();
-		session.close();
+		Transaction txn = session.getTransaction();
+		int id = -1;
+		try {
+			txn.begin();
+			id = (int) session.save(user);
+			txn.commit(); 
+		} catch (Exception e) {
+      if(txn != null) { txn.rollback(); }
+     
+      if(e.getCause() != null 
+      		&& e.getCause() instanceof SQLIntegrityConstraintViolationException) {
+        SQLIntegrityConstraintViolationException sql_violation_exception = (SQLIntegrityConstraintViolationException) e.getCause();
+        throw sql_violation_exception;
+     } else {
+    	 throw e;
+    	 //e.printStackTrace();
+     }
+		} finally {
+      if(session != null) { 
+        session.close();  }			
+		}
 		return id;
 	}	
 	
@@ -29,14 +49,30 @@ public class UsersDAO {
 		return users;
 	}	
 	
-	public void updateInformation(int id, String email, String username) {
+	public void updateInformation(int id, String email, String username) throws SQLIntegrityConstraintViolationException {
 		Session session = factory.openSession();
-		session.beginTransaction();
-		User user = session.get(User.class, id);
-		user.setEmail(email);
-		user.setUsername(username);
-		session.getTransaction().commit();
-		session.close();
+		Transaction txn = session.getTransaction();
+		try {
+			txn.begin();
+			User user = session.get(User.class, id);
+			user.setEmail(email);
+			user.setUsername(username);
+			txn.commit();
+		} catch (Exception e) {
+			if(txn != null) { txn.rollback(); }
+			if(e.getCause() != null 
+					&& e.getCause().getCause() instanceof SQLIntegrityConstraintViolationException) {
+				SQLIntegrityConstraintViolationException sql_violation_exception = (SQLIntegrityConstraintViolationException) e.getCause().getCause();
+				throw sql_violation_exception;
+			} else {
+				e.printStackTrace();
+				throw e;
+			}
+		} finally {
+			if(session != null) { 
+				session.close();  }
+		}
+
 	}	
 	
 	public User getUser(int id) {

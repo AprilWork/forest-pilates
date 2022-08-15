@@ -2,6 +2,7 @@ package com.kukvar.hibernate.DAO;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
@@ -12,7 +13,6 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-
 import com.kukvar.hibernate.entity.User;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -21,7 +21,7 @@ class UsersDAOTest {
 	private static final String NAME = "Peter Tester";
 	private static final String PASSWORD = "test";
 	private User testedCustomer = new User(EMAIL,NAME,PASSWORD);
-	static int id;
+	static int id, id2;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -42,10 +42,14 @@ class UsersDAOTest {
 	@Test
 	@Order(1)
 	final void testAddUserDetails() {
-		id = new UsersDAO().addUserDetails(testedCustomer);
+		try {
+			id = new UsersDAO().addUserDetails(testedCustomer);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		assertNotNull(new UsersDAO().getUser(id), "The user not added.");
 	}
-
+	
 	@Test
 	@Order(2)
 	final void testListUsers() {
@@ -76,7 +80,12 @@ class UsersDAOTest {
 	@Test
 	@Order(6)
 	final void testUpdateInformation() {
-		new UsersDAO().updateInformation(id, EMAIL, NAME+1);
+		try {
+			new UsersDAO().updateInformation(id, EMAIL, NAME+1);
+		} catch (SQLIntegrityConstraintViolationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertEquals(NAME+1, new UsersDAO().getUser(id).getUsername(),"The user's name do not updated.");
 	}
 
@@ -85,6 +94,32 @@ class UsersDAOTest {
 	final void testDeleteCustomer() {
 		new UsersDAO().deleteUser(id);
 		assertNull(new UsersDAO().getUser(id), "The user do not deleted.");	
+	}
+	
+	@Test
+	@Order(8)
+	final void testDuplicateUserDetails() {
+		final String DUPLICATE_MAIL = "duplicate@yahoo.com";
+		testedCustomer.setEmail(DUPLICATE_MAIL);
+		try {
+			id = new UsersDAO().addUserDetails(testedCustomer);
+			assertNotNull(new UsersDAO().getUser(id), "The user not added.");
+			assertThrows(SQLIntegrityConstraintViolationException.class
+					,() -> new UsersDAO().addUserDetails(testedCustomer)
+					,"The wrong throwable in case of add a duplicate entry.");
+			testedCustomer.setEmail(EMAIL);
+			id2 = new UsersDAO().addUserDetails(testedCustomer);
+			assertThrows(SQLIntegrityConstraintViolationException.class
+					,() -> new UsersDAO().updateInformation(id2,DUPLICATE_MAIL,testedCustomer.getUsername())
+					,"The wrong throwable in case of update to duplicate entry.");
+				
+		} catch (Throwable e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} finally {
+			new UsersDAO().deleteUser(id);
+			new UsersDAO().deleteUser(id2);
+		}	
 	}
 
 }
