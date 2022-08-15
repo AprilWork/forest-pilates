@@ -14,9 +14,9 @@
         <property name="connection.password">401senekA*83</property>
            
         <!-- Show SQL on console -->
-        <property name="show_sql">true</property>
+        <property name="show_sql">false</property>
          <!--  Activate Hibernate Statistics  -->
-        <property name="generate_statistics">true</property> 
+        <property name="generate_statistics">false</property> 
     <!--Setting Session context model -->
     <property name="current_session_context_class">thread</property>
  

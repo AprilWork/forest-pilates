@@ -5,7 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import com.kukvar.hibernate.entity.Group;
-import com.kukvar.utils.HibernateUtil;
+import com.kukvar.hibernate.utils.HibernateUtil;
 
 public class GroupsDAO {
 	SessionFactory factory = HibernateUtil.getSessionFactory();

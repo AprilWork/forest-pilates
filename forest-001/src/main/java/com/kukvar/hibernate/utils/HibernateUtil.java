@@ -1,4 +1,4 @@
-package com.kukvar.utils;
+package com.kukvar.hibernate.utils;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;

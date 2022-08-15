@@ -1,4 +1,4 @@
-package com.kukvar.servlets;
+package com.kukvar.controller.servlets;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

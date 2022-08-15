@@ -4,7 +4,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import com.kukvar.hibernate.entity.Category;
-import com.kukvar.utils.HibernateUtil;
+import com.kukvar.hibernate.utils.HibernateUtil;
 
 public class CategoryDAO {
 	private SessionFactory factory = HibernateUtil.getSessionFactory();
