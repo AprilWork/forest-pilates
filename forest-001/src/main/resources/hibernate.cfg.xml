@@ -15,7 +15,7 @@
            
         <!-- Show SQL on console -->
         <property name="show_sql">true</property>
- 
+      
     <!--Setting Session context model -->
     <property name="current_session_context_class">thread</property>
  
