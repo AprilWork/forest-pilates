@@ -92,7 +92,12 @@ class UsersDAOTest {
 	@Test
 	@Order(7)
 	final void testDeleteCustomer() {
-		new UsersDAO().deleteUser(id);
+		try {
+			new UsersDAO().deleteUser(id);
+		} catch (SQLIntegrityConstraintViolationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertNull(new UsersDAO().getUser(id), "The user do not deleted.");	
 	}
 	
@@ -117,8 +122,13 @@ class UsersDAOTest {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} finally {
-			new UsersDAO().deleteUser(id);
-			new UsersDAO().deleteUser(id2);
+			try {
+				new UsersDAO().deleteUser(id);
+				new UsersDAO().deleteUser(id2);
+			} catch (SQLIntegrityConstraintViolationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}	
 	}
 

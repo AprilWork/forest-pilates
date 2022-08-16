@@ -113,15 +113,31 @@ public class UsersDAO {
 		}
 	}	
 	
-	public void deleteUser(int id) {
+	public void deleteUser(int id) throws SQLIntegrityConstraintViolationException {
 		Session session = factory.openSession();
-		session.beginTransaction();		
-		User user = session.get(User.class, id);
-		if (user != null) {
-			session.delete(user);
-		}
-		session.getTransaction().commit();
-		session.close();
+		Transaction txn = session.getTransaction();
+		try {
+			txn.begin();
+			User user = session.get(User.class, id);
+			if (user != null) {
+				session.delete(user);
+			}			
+			txn.commit();
+		} catch (Exception e) {
+			if(txn != null) { txn.rollback(); }
+			if(e.getCause() != null 
+					&& e.getCause().getCause() instanceof SQLIntegrityConstraintViolationException) {
+				SQLIntegrityConstraintViolationException sql_violation_exception = (SQLIntegrityConstraintViolationException) e.getCause().getCause();
+				throw sql_violation_exception;
+			} else {
+				e.printStackTrace();
+				throw e;
+			}
+		} finally {
+			if(session != null) { 
+				session.close();  }
+		}			
+
 	}
 	
 }
