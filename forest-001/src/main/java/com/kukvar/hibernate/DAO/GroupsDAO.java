@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+import com.kukvar.hibernate.entity.Category;
 import com.kukvar.hibernate.entity.Group;
 import com.kukvar.hibernate.utils.HibernateUtil;
 
@@ -29,7 +31,7 @@ public class GroupsDAO {
 		return groups;
 	}	
 	
-	public void updateInformation(int id, String name, String description, String nameImageFile) {
+	public void updateInformation(int id, String name, String description, String nameImageFile, Category category) {
 		Session session = factory.openSession();
 		session.beginTransaction();
 		Group group = session.get(Group.class, id);
@@ -37,6 +39,7 @@ public class GroupsDAO {
 		group.setName(name);
 		group.setDescription(description);
 		group.setNameImageFile(nameImageFile);
+		group.setCategory(category);
 		session.getTransaction().commit();
 		session.close();
 	}	

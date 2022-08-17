@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import com.kukvar.hibernate.entity.Category;
 import com.kukvar.hibernate.entity.Group;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -18,15 +19,30 @@ class GroupsDAOTest {
 static final String NAME = "Tested name";
 static final String DESCRIPTION = "Wonderfull yoga class for beginners. All age invited!";
 static final String IMAGE = "image.jpg";
-static int id; 
-private Group testedGroup = new Group(NAME, DESCRIPTION, IMAGE);
+static final String TYPE = "testedSuper";
+static int id, id_category; 
+private static Category category = null; 
+private Group testedGroup = null;  
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
+		try {
+			category = new Category(TYPE);
+			id_category =  new CategoryDAO().addCategoryDetails(category);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 
 	@AfterAll
 	static void tearDownAfterClass() throws Exception {
+		try {
+			new CategoryDAO().deleteCategory(id_category);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@BeforeEach
@@ -40,8 +56,10 @@ private Group testedGroup = new Group(NAME, DESCRIPTION, IMAGE);
 	@Test
 	@Order(1)
 	final void testAddGroupDetails() {
+		assertNotNull(new CategoryDAO().getCategory(id_category), "The category not existed.");
+		testedGroup = new Group(NAME, DESCRIPTION, IMAGE,category);
 		id = new GroupsDAO().addGroupDetails(testedGroup);
-		assertNotNull(new GroupsDAO().getGroup(id), "The category not added.");
+		assertNotNull(new GroupsDAO().getGroup(id), "The group not added.");
 	}
 	
 	@Test
@@ -74,16 +92,21 @@ private Group testedGroup = new Group(NAME, DESCRIPTION, IMAGE);
 	@Test
 	@Order(6)
 	final void testUpdateInformation() {
-		new GroupsDAO().updateInformation(id, NAME, DESCRIPTION+1, IMAGE);
+		new CategoryDAO().updateInformation(id_category, TYPE+1);
+		category = new CategoryDAO().getCategory(id_category);
+		new GroupsDAO().updateInformation(id, NAME, DESCRIPTION, IMAGE, category);
+		assertEquals(TYPE+1, new GroupsDAO().getGroup(id).getCategory().getName(),"The group's category do not updated.");
+		
+		new GroupsDAO().updateInformation(id, NAME, DESCRIPTION+1, IMAGE, category);
 		assertEquals(DESCRIPTION+1, new GroupsDAO().getGroup(id).getDescription(),"The group's description do not updated.");
 		
-		new GroupsDAO().updateInformation(id, NAME+1, DESCRIPTION, IMAGE);
+		new GroupsDAO().updateInformation(id, NAME+1, DESCRIPTION, IMAGE, category);
 		assertEquals(NAME+1, new GroupsDAO().getGroup(id).getName(),"The group's name do not updated.");
 		
-		new GroupsDAO().updateInformation(id, NAME, DESCRIPTION, "updated"+IMAGE);
+		new GroupsDAO().updateInformation(id, NAME, DESCRIPTION, "updated"+IMAGE, category);
 		assertEquals("updated"+IMAGE, new GroupsDAO().getGroup(id).getNameImageFile(),"The group's image do not updated.");
 		
-		new GroupsDAO().updateInformation(id, NAME, DESCRIPTION, null);
+		new GroupsDAO().updateInformation(id, NAME, DESCRIPTION, null,category);
 		assertEquals(null, new GroupsDAO().getGroup(id).getNameImageFile(),"The group's image do not updated.");	
 	}
 
