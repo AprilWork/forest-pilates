@@ -30,7 +30,6 @@ private Group testedGroup = null;
 			category = new Category(TYPE);
 			id_category =  new CategoryDAO().addCategoryDetails(category);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 	}
@@ -40,7 +39,6 @@ private Group testedGroup = null;
 		try {
 			new CategoryDAO().deleteCategory(id_category);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -56,7 +54,6 @@ private Group testedGroup = null;
 	@Test
 	@Order(1)
 	final void testAddGroupDetails() {
-		assertNotNull(new CategoryDAO().getCategory(id_category), "The category not existed.");
 		testedGroup = new Group(NAME, DESCRIPTION, IMAGE,category);
 		id = new GroupsDAO().addGroupDetails(testedGroup);
 		assertNotNull(new GroupsDAO().getGroup(id), "The group not added.");

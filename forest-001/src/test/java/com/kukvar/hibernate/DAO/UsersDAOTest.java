@@ -83,7 +83,6 @@ class UsersDAOTest {
 		try {
 			new UsersDAO().updateInformation(id, EMAIL, NAME+1);
 		} catch (SQLIntegrityConstraintViolationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		assertEquals(NAME+1, new UsersDAO().getUser(id).getUsername(),"The user's name do not updated.");
@@ -95,7 +94,6 @@ class UsersDAOTest {
 		try {
 			new UsersDAO().deleteUser(id);
 		} catch (SQLIntegrityConstraintViolationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		assertNull(new UsersDAO().getUser(id), "The user do not deleted.");	
@@ -119,14 +117,12 @@ class UsersDAOTest {
 					,"The wrong throwable in case of update to duplicate entry.");
 				
 		} catch (Throwable e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} finally {
 			try {
 				new UsersDAO().deleteUser(id);
 				new UsersDAO().deleteUser(id2);
 			} catch (SQLIntegrityConstraintViolationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}	
