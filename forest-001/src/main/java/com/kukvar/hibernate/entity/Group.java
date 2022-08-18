@@ -37,13 +37,15 @@ public class Group {
 		this.nameImageFile = imageNameHelper(nameImageFile);
 		this.category = category;
 	}
-	
+
+	/*
 	public Group(String name, String description) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.nameImageFile = imageNameHelper("");
 	}
+	*/
 	
 	private String imageNameHelper(String image) {
 		if (image == null || image.isBlank()) { return "default.jpg"; }
