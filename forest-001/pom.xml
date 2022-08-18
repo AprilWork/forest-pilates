@@ -98,6 +98,23 @@
           <artifactId>maven-deploy-plugin</artifactId>
           <version>2.8.2</version>
         </plugin>
+        <!-- Added for downloading docs and sources-->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>3.3.0</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>sources</goal>
+                        <goal>resolve</goal>
+                    </goals>
+                    <configuration>
+                        <classifier>javadoc</classifier>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>        
       </plugins>
     </pluginManagement>
   </build>
