@@ -14,7 +14,9 @@
         <property name="connection.password">401senekA*83</property>
            
         <!-- Show SQL on console -->
-        <property name="show_sql">true</property>
+        <property name="show_sql">false</property>
+        <!-- Make SQL output pretty -->
+        <property name="hibernate.format_sql">true</property>        
       
     <!--Setting Session context model -->
     <property name="current_session_context_class">thread</property>
