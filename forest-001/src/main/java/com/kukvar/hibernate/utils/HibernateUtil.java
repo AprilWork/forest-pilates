@@ -7,6 +7,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import com.kukvar.hibernate.entity.Category;
 import com.kukvar.hibernate.entity.User;
+import com.kukvar.hibernate.entity.UserInfo;
 import com.kukvar.hibernate.entity.Files;
 import com.kukvar.hibernate.entity.Group;
 
@@ -24,6 +25,7 @@ public class HibernateUtil {
           		.addAnnotatedClass(Group.class)
         			.addAnnotatedClass(Category.class)
         			.addAnnotatedClass(User.class)
+        			.addAnnotatedClass(UserInfo.class)
         			.addAnnotatedClass(Files.class)        		
           		.getMetadataBuilder().build();
           return metadata.getSessionFactoryBuilder().build();
