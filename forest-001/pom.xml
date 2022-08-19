@@ -55,13 +55,13 @@
         <version>8.0.29</version>
         <!--<scope>provided</scope> -->
     </dependency>
-<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j -->
-<dependency>
-    <groupId>org.apache.logging.log4j</groupId>
-    <artifactId>log4j</artifactId>
-    <version>2.18.0</version>
-    <type>pom</type>
-</dependency>   
+	<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j -->
+	<dependency>
+	    <groupId>org.apache.logging.log4j</groupId>
+	    <artifactId>log4j</artifactId>
+	    <version>2.18.0</version>
+	    <type>pom</type>
+	</dependency>   
     
   </dependencies>
 

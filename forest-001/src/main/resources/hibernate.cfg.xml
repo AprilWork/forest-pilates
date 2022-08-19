@@ -6,8 +6,8 @@
     <session-factory>
  
         <!-- Connection settings -->
-        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
               <!-- Sample MySQL URL provided  -->  
         <property name="connection.url">jdbc:mysql://localhost:3306/schedule_db</property>
         <property name="connection.username">root</property>
@@ -17,7 +17,8 @@
         <property name="show_sql">false</property>
         <!-- Make SQL output pretty -->
         <property name="hibernate.format_sql">true</property>        
-      
+         <!--  Activate Hibernate Statistics  -->
+        <property name="generate_statistics">false</property>      
     <!--Setting Session context model -->
     <property name="current_session_context_class">thread</property>
  
