@@ -14,13 +14,26 @@
   <url>http://www.example.com</url>
 
   <properties>
+  		<hamcrest.version>2.2</hamcrest.version>
     <junit-jupiter.version>5.5.2</junit-jupiter.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>14</maven.compiler.source>
-    <maven.compiler.target>14</maven.compiler.target>
+    <maven.compiler.source>18</maven.compiler.source>
+    <maven.compiler.target>18</maven.compiler.target>
   </properties>
 
   <dependencies>
+    <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest</artifactId>
+        <version>2.2</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest-library</artifactId>
+        <version>2.2</version>
+        <scope>test</scope>
+    </dependency>  
 <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
 <dependency>
     <groupId>org.junit.jupiter</groupId>
@@ -33,14 +46,14 @@
         <groupId>javax.servlet</groupId>
         <artifactId>javax.servlet-api</artifactId>
         <version>4.0.1</version>
-        <!-- <scope>provided</scope> -->
+        <scope>provided</scope>
     </dependency>
     <!-- https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api -->
     <dependency>
         <groupId>javax.servlet.jsp</groupId>
         <artifactId>javax.servlet.jsp-api</artifactId>
         <version>2.3.3</version>
-        <!--<scope>provided</scope> -->
+        <scope>provided</scope>
     </dependency>  
     <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
     <dependency>
