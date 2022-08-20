@@ -1,6 +1,10 @@
 package com.kukvar.hibernate.DAO;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
@@ -13,6 +17,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+
 import com.kukvar.hibernate.entity.User;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -30,7 +35,7 @@ class UsersDAOTest {
 	@AfterAll
 	static void tearDownAfterClass() throws Exception {	
 	}
-	
+
 	@BeforeEach
 	void setUp() throws Exception {
 	}
@@ -38,18 +43,27 @@ class UsersDAOTest {
 	@AfterEach
 	void tearDown() throws Exception {
 	}
-	
+
 	@Test
 	@Order(1)
 	final void testAddUserDetails() {
 		try {
 			id = new UsersDAO().addUserDetails(testedCustomer);
 		} catch (Throwable e) {
-			e.printStackTrace();
+			System.out.println("I catch: "+e.getMessage());
+			//e.printStackTrace();
 		}
 		assertNotNull(new UsersDAO().getUser(id), "The user not added.");
+		try {
+			assertThrows(SQLIntegrityConstraintViolationException.class
+					,() -> new UsersDAO().addUserDetails(testedCustomer)
+					,"The wrong throwable in case of update to duplicate entry.");
+		} catch (Throwable e) {
+			System.out.println("I catch: "+e.getMessage());
+			//e.printStackTrace();
+		}		
 	}
-	
+
 	@Test
 	@Order(2)
 	final void testListUsers() {
@@ -62,7 +76,7 @@ class UsersDAOTest {
 	final void testIsExisted() {
 		assertTrue(new UsersDAO().isExisted(EMAIL),"A user existed but returned not existed result.");		
 	}
-	
+
 	@Test
 	@Order(4)
 	final void testGetUserViaEmail() {
@@ -76,14 +90,15 @@ class UsersDAOTest {
 		assertNotNull(new UsersDAO().getUser(id), "User do not returned.");
 		assertEquals(id, new UsersDAO().getUser(id).getId(),"Returned wrong user id");
 	}	
-	
+
 	@Test
 	@Order(6)
 	final void testUpdateInformation() {
 		try {
 			new UsersDAO().updateInformation(id, EMAIL, NAME+1);
 		} catch (SQLIntegrityConstraintViolationException e) {
-			e.printStackTrace();
+			System.out.println("I catch: "+e.getMessage());
+			//e.printStackTrace();
 		}
 		assertEquals(NAME+1, new UsersDAO().getUser(id).getUsername(),"The user's name do not updated.");
 	}
@@ -94,11 +109,12 @@ class UsersDAOTest {
 		try {
 			new UsersDAO().deleteUser(id);
 		} catch (SQLIntegrityConstraintViolationException e) {
-			e.printStackTrace();
+			System.out.println("I catch: "+e.getMessage());
+			//e.printStackTrace();
 		}
 		assertNull(new UsersDAO().getUser(id), "The user do not deleted.");	
 	}
-	
+
 	@Test
 	@Order(8)
 	final void testDuplicateUserDetails() {
@@ -115,15 +131,17 @@ class UsersDAOTest {
 			assertThrows(SQLIntegrityConstraintViolationException.class
 					,() -> new UsersDAO().updateInformation(id2,DUPLICATE_MAIL,testedCustomer.getUsername())
 					,"The wrong throwable in case of update to duplicate entry.");
-				
+
 		} catch (Throwable e1) {
-			e1.printStackTrace();
+			System.out.println("I catch: "+e1.getMessage());
+			//e1.printStackTrace();
 		} finally {
 			try {
 				new UsersDAO().deleteUser(id);
 				new UsersDAO().deleteUser(id2);
 			} catch (SQLIntegrityConstraintViolationException e) {
-				e.printStackTrace();
+				System.out.println("I catch : "+e.getMessage());
+				//e.printStackTrace();
 			}
 		}	
 	}
