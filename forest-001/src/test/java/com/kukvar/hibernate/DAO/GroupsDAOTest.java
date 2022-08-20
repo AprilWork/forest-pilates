@@ -16,10 +16,10 @@ import com.kukvar.hibernate.entity.Group;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class GroupsDAOTest {
-static final String NAME = "Tested name";
+static final String NAME = "Tested group name";
 static final String DESCRIPTION = "Wonderfull yoga class for beginners. All age invited!";
 static final String IMAGE = "image.jpg";
-static final String TYPE = "testedSuper";
+static final String TYPE = "category in group test";
 static int id, id_category; 
 private static Category category = null; 
 private Group testedGroup = null;  

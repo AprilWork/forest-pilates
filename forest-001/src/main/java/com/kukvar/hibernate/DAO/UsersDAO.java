@@ -12,7 +12,7 @@ import com.kukvar.hibernate.utils.HibernateUtil;
 
 public class UsersDAO {
 	SessionFactory factory = HibernateUtil.getSessionFactory();
-	
+
 	public int addUserDetails(User user) throws SQLIntegrityConstraintViolationException {
 		Session session = factory.openSession();
 		Transaction txn = session.getTransaction();
@@ -22,23 +22,23 @@ public class UsersDAO {
 			id = (int) session.save(user);
 			txn.commit(); 
 		} catch (Exception e) {
-      if(txn != null) { txn.rollback(); }
-     
-      if(e.getCause() != null 
-      		&& e.getCause() instanceof SQLIntegrityConstraintViolationException) {
-        SQLIntegrityConstraintViolationException sql_violation_exception = (SQLIntegrityConstraintViolationException) e.getCause();
-        throw sql_violation_exception;
-     } else {
-    	 throw e;
-    	 //e.printStackTrace();
-     }
+			if(txn != null) { txn.rollback(); }
+
+			if(e.getCause() != null 
+					&& e.getCause() instanceof SQLIntegrityConstraintViolationException) {
+				SQLIntegrityConstraintViolationException sql_violation_exception = (SQLIntegrityConstraintViolationException) e.getCause();
+				throw sql_violation_exception;
+			} else {
+				throw e;
+				//e.printStackTrace();
+			}
 		} finally {
-      if(session != null) { 
-        session.close();  }			
+			if(session != null) { 
+				session.close();  }			
 		}
 		return id;
 	}	
-	
+
 	public List<User> listUsers() {
 		Session session = factory.openSession();
 		session.beginTransaction();
@@ -48,7 +48,7 @@ public class UsersDAO {
 		session.close();
 		return users;
 	}	
-	
+
 	public void updateInformation(int id, String email, String username) throws SQLIntegrityConstraintViolationException {
 		Session session = factory.openSession();
 		Transaction txn = session.getTransaction();
@@ -65,7 +65,7 @@ public class UsersDAO {
 				SQLIntegrityConstraintViolationException sql_violation_exception = (SQLIntegrityConstraintViolationException) e.getCause().getCause();
 				throw sql_violation_exception;
 			} else {
-				e.printStackTrace();
+				//e.printStackTrace();
 				throw e;
 			}
 		} finally {
@@ -74,7 +74,7 @@ public class UsersDAO {
 		}
 
 	}	
-	
+
 	public User getUser(int id) {
 		Session session = factory.openSession();
 		session.beginTransaction();
@@ -83,7 +83,7 @@ public class UsersDAO {
 		session.close();
 		return user;
 	}	
-	
+
 	public User getUser(String email) {
 		Session session = factory.openSession();
 		session.beginTransaction();
@@ -99,7 +99,7 @@ public class UsersDAO {
 		session.close();
 		return user;
 	}
-	
+
 	public boolean isExisted(String email) {
 		Session session = factory.openSession();
 		session.beginTransaction();
@@ -112,7 +112,7 @@ public class UsersDAO {
 			return true;
 		}
 	}	
-	
+
 	public void deleteUser(int id) throws SQLIntegrityConstraintViolationException {
 		Session session = factory.openSession();
 		Transaction txn = session.getTransaction();
@@ -130,7 +130,7 @@ public class UsersDAO {
 				SQLIntegrityConstraintViolationException sql_violation_exception = (SQLIntegrityConstraintViolationException) e.getCause().getCause();
 				throw sql_violation_exception;
 			} else {
-				e.printStackTrace();
+				//e.printStackTrace();
 				throw e;
 			}
 		} finally {
@@ -139,5 +139,5 @@ public class UsersDAO {
 		}			
 
 	}
-	
+
 }

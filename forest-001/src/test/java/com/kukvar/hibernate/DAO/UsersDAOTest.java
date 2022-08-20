@@ -51,17 +51,19 @@ class UsersDAOTest {
 			id = new UsersDAO().addUserDetails(testedCustomer);
 		} catch (Throwable e) {
 			System.out.println("I catch: "+e.getMessage());
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 		assertNotNull(new UsersDAO().getUser(id), "The user not added.");
+		
 		try {
 			assertThrows(SQLIntegrityConstraintViolationException.class
 					,() -> new UsersDAO().addUserDetails(testedCustomer)
 					,"The wrong throwable in case of update to duplicate entry.");
 		} catch (Throwable e) {
 			System.out.println("I catch: "+e.getMessage());
-			//e.printStackTrace();
-		}		
+			e.printStackTrace();
+		}	
+			
 	}
 
 	@Test
@@ -98,7 +100,7 @@ class UsersDAOTest {
 			new UsersDAO().updateInformation(id, EMAIL, NAME+1);
 		} catch (SQLIntegrityConstraintViolationException e) {
 			System.out.println("I catch: "+e.getMessage());
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 		assertEquals(NAME+1, new UsersDAO().getUser(id).getUsername(),"The user's name do not updated.");
 	}
@@ -110,11 +112,12 @@ class UsersDAOTest {
 			new UsersDAO().deleteUser(id);
 		} catch (SQLIntegrityConstraintViolationException e) {
 			System.out.println("I catch: "+e.getMessage());
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 		assertNull(new UsersDAO().getUser(id), "The user do not deleted.");	
 	}
 
+	
 	@Test
 	@Order(8)
 	final void testDuplicateUserDetails() {
@@ -134,16 +137,17 @@ class UsersDAOTest {
 
 		} catch (Throwable e1) {
 			System.out.println("I catch: "+e1.getMessage());
-			//e1.printStackTrace();
+			e1.printStackTrace();
 		} finally {
 			try {
 				new UsersDAO().deleteUser(id);
 				new UsersDAO().deleteUser(id2);
 			} catch (SQLIntegrityConstraintViolationException e) {
 				System.out.println("I catch : "+e.getMessage());
-				//e.printStackTrace();
+				e.printStackTrace();
 			}
 		}	
 	}
+	
 
 }

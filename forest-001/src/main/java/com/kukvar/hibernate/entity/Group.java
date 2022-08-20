@@ -1,5 +1,6 @@
 package com.kukvar.hibernate.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +14,7 @@ import javax.persistence.Table;
 @Table(name="classes")
 public class Group {
 	static final String DEFAULT_IMAGE = "default.jpg";
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
@@ -24,10 +25,10 @@ public class Group {
 	private String description;	
 	@Column(name="file_image_name")
 	private String nameImageFile;
-	@ManyToOne
-	@JoinColumn(name="type_id")
+	@ManyToOne//(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@JoinColumn(name="type_id" )
 	private Category category;
-	
+
 	protected Group() {	}
 
 	public Group(String name, String description, String nameImageFile, Category category) {
@@ -45,8 +46,8 @@ public class Group {
 		this.description = description;
 		this.nameImageFile = imageNameHelper("");
 	}
-	*/
-	
+	 */
+
 	private String imageNameHelper(String image) {
 		if (image == null || image.isBlank()) { return "default.jpg"; }
 		else return image;
@@ -83,7 +84,7 @@ public class Group {
 	public void setNameImageFile(String nameImageFile) {
 		this.nameImageFile = nameImageFile;
 	}
-	
+
 	public Category getCategory() {
 		return category;
 	}
@@ -97,5 +98,5 @@ public class Group {
 		return "Group [id=" + id + ", name=" + name + ", description=" + description + ", nameImageFile=" + nameImageFile
 				+ ", category=" + category.getName() + "]";
 	}
-	
+
 }
