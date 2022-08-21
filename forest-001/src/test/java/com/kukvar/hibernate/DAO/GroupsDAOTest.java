@@ -1,6 +1,8 @@
 package com.kukvar.hibernate.DAO;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -89,7 +91,12 @@ private Group testedGroup = null;
 	@Test
 	@Order(6)
 	final void testUpdateInformation() {
-		new CategoryDAO().updateInformation(id_category, TYPE+1);
+		try {
+			new CategoryDAO().updateInformation(id_category, TYPE+1);
+		} catch (SQLIntegrityConstraintViolationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		category = new CategoryDAO().getCategory(id_category);
 		new GroupsDAO().updateInformation(id, NAME, DESCRIPTION, IMAGE, category);
 		assertEquals(TYPE+1, new GroupsDAO().getGroup(id).getCategory().getName(),"The group's category do not updated.");

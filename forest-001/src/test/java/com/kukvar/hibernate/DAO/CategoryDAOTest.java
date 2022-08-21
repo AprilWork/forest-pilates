@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -53,7 +54,12 @@ class CategoryDAOTest {
 	@Test
 	@Order(2)
 	final void testAddCategoryDetails() {
-		id = new CategoryDAO().addCategoryDetails(testedCategory);
+		try {
+			id = new CategoryDAO().addCategoryDetails(testedCategory);
+		} catch (SQLIntegrityConstraintViolationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertNotNull(new CategoryDAO().getCategory(id), "The category not added.");
 	}
 
@@ -80,14 +86,24 @@ class CategoryDAOTest {
 	@Test
 	@Order(6)
 	final void testUpdateInformation() {
-		new CategoryDAO().updateInformation(id, NAME + 1);
+		try {
+			new CategoryDAO().updateInformation(id, NAME + 1);
+		} catch (SQLIntegrityConstraintViolationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertEquals(NAME + 1, new CategoryDAO().getCategory(id).getName(), "The category's name do not updated.");
 	}
 
 	@Test
 	@Order(7)
 	final void testDeleteCategory() {
-		new CategoryDAO().deleteCategory(id);
+		try {
+			new CategoryDAO().deleteCategory(id);
+		} catch (SQLIntegrityConstraintViolationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertNull(new CategoryDAO().getCategory(id), "The class category do not deleted.");
 		
 		 assertFalse( new GroupsDAO().listGroups() .stream().anyMatch(t ->
@@ -97,15 +113,25 @@ class CategoryDAOTest {
 	
 	 @Test 
 	 @Order(8) 
-	 final void testDeleteCascade() { id = new
-	 CategoryDAO().addCategoryDetails(testedCategory); 
+	 final void testDeleteCascade() { try {
+		id = new
+		 CategoryDAO().addCategoryDetails(testedCategory);
+	} catch (SQLIntegrityConstraintViolationException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} 
 	 @SuppressWarnings("unused") 
 	 List<Integer> groups = Arrays.asList( new
 	 GroupsDAO().addGroupDetails(new Group(NAME+"Group1", NAME, "",
 	 testedCategory)), new GroupsDAO().addGroupDetails(new Group(NAME+"Group2",
 	 NAME, "", testedCategory)), new GroupsDAO().addGroupDetails(new
-	 Group(NAME+"Group3", NAME, "", testedCategory)) ); new
-	 CategoryDAO().deleteCategory(id); assertFalse( new GroupsDAO().listGroups()
+	 Group(NAME+"Group3", NAME, "", testedCategory)) ); try {
+		new
+		 CategoryDAO().deleteCategory(id);
+	} catch (SQLIntegrityConstraintViolationException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} assertFalse( new GroupsDAO().listGroups()
 	 .stream().anyMatch(t -> t.getCategory().getId() == id) ); }
 	 
 }
