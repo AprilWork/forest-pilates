@@ -4,31 +4,28 @@ import java.time.LocalDate;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity(name="user_info")
 @Table(name="user_info")
 public class UserInfo {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
-	@Column(name="email", nullable=false)
-	private String email;	
 	@Column(name="first_name")
 	private String first_name;	
 	@Column(name="last_name")
 	private String last_name;	
 	@Column(name="date_birth")
 	private LocalDate dateBirth;
-	@Column(name="phone")
-	private String phone;	
 
 	@Embedded
 	@AttributeOverrides( {
@@ -45,34 +42,36 @@ public class UserInfo {
 		@AttributeOverride(name="zipcode", column=@Column(name="billing_zipcode"))
 	} )
 	private Address billingAddress;
-
+	
+	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+	@JoinColumn(name="id", unique=true)
+	@MapsId	
+	private User user;
+	
 	public UserInfo() {	}
 
 	/**
-	 * @param email
 	 * @param first_name
 	 * @param last_name
 	 * @param dateBirth
-	 * @param phone
 	 * @param homeAddress
 	 * @param billingAddress
+	 * @param user
 	 */
-	public UserInfo(String email, String first_name, String last_name, LocalDate dateBirth, String phone,
-			Address homeAddress, Address billingAddress) {
-		super();
-		this.email = email;
+	public UserInfo(String first_name, String last_name, LocalDate dateBirth, Address homeAddress, Address billingAddress,
+			User user) {
 		this.first_name = first_name;
 		this.last_name = last_name;
 		this.dateBirth = dateBirth;
-		this.phone = phone;
 		this.homeAddress = homeAddress;
 		this.billingAddress = billingAddress;
+		this.user = user;
 	}
 
 	@Override
 	public String toString() {
-		return "UserInfo [id=" + id + ", email=" + email + ", first_name=" + first_name + ", last_name=" + last_name
-				+ ", dateBirth=" + dateBirth + ", phone=" + phone + ", homeAddress=" + homeAddress + ", billingAddress="
+		return "UserInfo [id=" + id + ", first_name=" + first_name + ", last_name=" + last_name
+				+ ", dateBirth=" + dateBirth + ", homeAddress=" + homeAddress + ", billingAddress="
 				+ billingAddress + "]";
 	}
 
@@ -82,14 +81,6 @@ public class UserInfo {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getFirst_name() {
@@ -116,14 +107,6 @@ public class UserInfo {
 		this.dateBirth = dateBirth;
 	}
 
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
 	public Address getHomeAddress() {
 		return homeAddress;
 	}
@@ -140,8 +123,13 @@ public class UserInfo {
 		this.billingAddress = billingAddress;
 	}
 
-	
+	public User getUser() {
+		return user;
+	}
 
-	
-	
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+		
 }
