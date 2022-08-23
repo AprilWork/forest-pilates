@@ -25,7 +25,8 @@ public class Group {
 	private String description;	
 	@Column(name="file_image_name")
 	private String nameImageFile;
-	@ManyToOne//(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	
+	@ManyToOne(cascade = {CascadeType.PERSIST})
 	@JoinColumn(name="type_id" )
 	private Category category;
 
