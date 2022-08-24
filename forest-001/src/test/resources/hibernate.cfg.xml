@@ -9,7 +9,7 @@
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
               <!-- Sample MySQL URL provided  -->  
-        <property name="connection.url">jdbc:mysql://localhost:3306/schedule_db</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/schedule_db_test</property>
         <property name="connection.username">root</property>
         <property name="connection.password">401senekA*83</property>
            
@@ -19,6 +19,18 @@
         <property name="hibernate.format_sql">true</property>        
          <!--  Activate Hibernate Statistics  -->
         <property name="generate_statistics">false</property> 
+        
+        <!-- DROP and then CREATE schema when SessionFactory is built -->
+        <property name="hbm2ddl.auto">create</property>  
+              
+        <!-- DROP and then CREATE schema when SessionFactory is built, and then DROP it again when SessionFactory is closed-->
+        <!-- <property name="hbm2ddl.auto">create-drop</property> -->        
+
+        <!-- Create/update tables automatically using mapping metadata -->
+        <!--  <property name="hbm2ddl.auto">update</property> -->
+        
+        
+        
     <!--Setting Session context model -->
     <property name="current_session_context_class">thread</property>
  
