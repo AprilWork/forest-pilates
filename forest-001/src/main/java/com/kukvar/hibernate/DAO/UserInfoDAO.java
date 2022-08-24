@@ -92,6 +92,7 @@ public class UserInfoDAO {
 		return users;
 	}
 
+/*	
 	public UserInfo getUserInfo(String email) {
 		Session session = factory.openSession();
 		session.beginTransaction();
@@ -120,19 +121,18 @@ public class UserInfoDAO {
 			return true;
 		}
 	}
-
-	public void updateInformation(int id, String email, String first_name, String last_name, LocalDate dateBirth,
-			String phone, Address homeAddress, Address billingAddress) throws SQLIntegrityConstraintViolationException {
+*/
+	
+	public void updateInformation(int id, String first_name, String last_name, LocalDate dateBirth,
+			Address homeAddress, Address billingAddress) throws SQLIntegrityConstraintViolationException {
 		Session session = factory.openSession();
 		Transaction txn = session.getTransaction();
 		try {
 			txn.begin();
 			UserInfo userInfo = session.get(UserInfo.class, id);
-			userInfo.setEmail(email);
 			userInfo.setFirst_name(first_name);
 			userInfo.setLast_name(last_name);
 			userInfo.setDateBirth(dateBirth);
-			userInfo.setPhone(phone);
 			userInfo.setHomeAddress(homeAddress);
 			userInfo.setBillingAddress(billingAddress);
 			txn.commit();

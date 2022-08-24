@@ -43,7 +43,7 @@ public class UserInfo {
 	} )
 	private Address billingAddress;
 	
-	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToOne(cascade={CascadeType.PERSIST})
 	@JoinColumn(name="id", unique=true)
 	@MapsId	
 	private User user;
@@ -58,8 +58,8 @@ public class UserInfo {
 	 * @param billingAddress
 	 * @param user
 	 */
-	public UserInfo(String first_name, String last_name, LocalDate dateBirth, Address homeAddress, Address billingAddress,
-			User user) {
+	public UserInfo(String first_name, String last_name, LocalDate dateBirth,
+			Address homeAddress, Address billingAddress, User user) {
 		this.first_name = first_name;
 		this.last_name = last_name;
 		this.dateBirth = dateBirth;

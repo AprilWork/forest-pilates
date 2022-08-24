@@ -49,14 +49,13 @@ public class UsersDAO {
 		return users;
 	}	
 
-	public void updateInformation(int id, String email, String username) throws SQLIntegrityConstraintViolationException {
+	public void updateInformation(int id, String email) throws SQLIntegrityConstraintViolationException {
 		Session session = factory.openSession();
 		Transaction txn = session.getTransaction();
 		try {
 			txn.begin();
 			User user = session.get(User.class, id);
 			user.setEmail(email);
-			user.setUsername(username);
 			txn.commit();
 		} catch (Exception e) {
 			if(txn != null) { txn.rollback(); }
