@@ -1,6 +1,7 @@
 package com.kukvar.hibernate.DAO;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -44,12 +45,21 @@ public class CategoryDAO {
 
 	public List<Category> listCategory() {
 		Session session = factory.openSession();
-		session.beginTransaction();
-		@SuppressWarnings("unchecked")
-		List<Category> category = session.createQuery("from class_type").getResultList();
-		session.getTransaction().commit();
-		session.close();
-		return category;
+		List<Category> category = null;
+		try {
+			session.beginTransaction();
+			category = session.createQuery("from class_type").getResultList();
+			session.getTransaction().commit();			
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (session != null) {
+				session.close(); 
+			}
+		}
+		return category;	
 	}
 
 	public void updateInformation(int id, String name) throws SQLIntegrityConstraintViolationException {
@@ -81,11 +91,17 @@ public class CategoryDAO {
 
 	public Category getCategory(int id) {
 		Session session = factory.openSession();
-		session.beginTransaction();
-		Category category = session.get(Category.class, id);
-		session.getTransaction().commit();
-		session.close();
-		return category;
+		Category category = null;
+		try {
+			session.beginTransaction();
+			category = session.get(Category.class, id);
+			session.getTransaction().commit();			
+		} finally {
+			if (session != null) {
+				session.close();
+			}	
+		}
+		return category;	
 	}
 
 	public Category getCategory(String name) {

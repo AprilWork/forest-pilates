@@ -43,7 +43,7 @@ public class UserInfo {
 	} )
 	private Address billingAddress;
 	
-	@OneToOne(cascade={CascadeType.PERSIST})
+	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	@JoinColumn(name="id", unique=true)
 	@MapsId	
 	private User user;

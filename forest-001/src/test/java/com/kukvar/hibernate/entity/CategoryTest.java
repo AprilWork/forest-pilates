@@ -7,10 +7,14 @@ import org.hibernate.Transaction;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import com.kukvar.hibernate.utils.HibernateUtil;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CategoryTest {
 	static Session session;
 	Transaction txn;
@@ -28,22 +32,10 @@ class CategoryTest {
 	@BeforeEach
 	void setUp() throws Exception {
 	}
+	
 
 	@Test
-	final void testGetGroups() {
-		txn = session.getTransaction();
-		try {
-			txn.begin();
-			Category category = (Category) session.get(Category.class, 1);
-			assertNotNull(category.getGroups(), "The groups in the category do not returned.");
-			txn.commit();
-		} catch (Exception e) {
-			if(txn != null) { txn.rollback(); }
-			e.printStackTrace();
-		}
-	}
-
-	@Test
+	@Order(1)
 	final void testAddGroup() {
 		txn = session.getTransaction();
 		try {
@@ -71,6 +63,7 @@ class CategoryTest {
 	}
 
 	@Test
+	@Order(2)
 	final void testRemoveGroup() {
 		txn = session.getTransaction();
 		try {

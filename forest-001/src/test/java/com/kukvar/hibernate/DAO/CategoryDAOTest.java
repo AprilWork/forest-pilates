@@ -1,6 +1,7 @@
 package com.kukvar.hibernate.DAO;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import com.kukvar.hibernate.entity.Category;
 import com.kukvar.hibernate.entity.Group;
 
+@Disabled("Disabled until bug #99 has been fixed")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CategoryDAOTest {
 	private static final String NAME = "Tested Category";
@@ -110,7 +113,8 @@ class CategoryDAOTest {
 		 t.getCategory().getId() == id) );
 		
 	}
-	
+
+	/*
 	 @Test 
 	 @Order(8) 
 	 final void testDeleteCascade() { try {
@@ -133,5 +137,5 @@ class CategoryDAOTest {
 		e.printStackTrace();
 	} assertFalse( new GroupsDAO().listGroups()
 	 .stream().anyMatch(t -> t.getCategory().getId() == id) ); }
-	 
+*/	 
 }

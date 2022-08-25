@@ -20,19 +20,21 @@
          <!--  Activate Hibernate Statistics  -->
         <property name="generate_statistics">false</property> 
         
+        
+        
         <!-- DROP and then CREATE schema when SessionFactory is built -->
-        <property name="hbm2ddl.auto">create</property>  
+        <!--  <property name="hbm2ddl.auto">create</property> --> 
               
         <!-- DROP and then CREATE schema when SessionFactory is built, and then DROP it again when SessionFactory is closed-->
-        <!-- <property name="hbm2ddl.auto">create-drop</property> -->        
-
+        <property name="hbm2ddl.auto">create-drop</property>   
+        
         <!-- Create/update tables automatically using mapping metadata -->
         <!--  <property name="hbm2ddl.auto">update</property> -->
         
         
         
     <!--Setting Session context model -->
-    <!-- <property name="current_session_context_class">thread</property> -->
+    <property name="current_session_context_class">thread</property>
  
     </session-factory>
 </hibernate-configuration>

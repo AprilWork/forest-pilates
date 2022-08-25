@@ -11,6 +11,7 @@ import com.kukvar.hibernate.entity.Category;
 import com.kukvar.hibernate.entity.Group;
 import com.kukvar.hibernate.utils.HibernateUtil;
 
+
 public class GroupsDAO {
 	SessionFactory factory = HibernateUtil.getSessionFactory();
 

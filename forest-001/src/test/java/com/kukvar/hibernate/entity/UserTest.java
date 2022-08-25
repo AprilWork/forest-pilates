@@ -2,6 +2,8 @@ package com.kukvar.hibernate.entity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.AfterAll;
@@ -42,17 +44,19 @@ class UserTest {
 			txn.begin();
 			User user = new User("testUser3@yahoo.com", "tested","1111111111");
 			Address address = new Address("Green str", "Orange", "45678");
-			//UserInfo userInfo = new UserInfo("John", "Doe", LocalDate.parse("2022-05-16"), address, address, user);
-			UserInfo userInfo = new UserInfo(null, null, null, null, null, user);
+			UserInfo userInfo = new UserInfo("John", "Doe", LocalDate.parse("2022-05-16"), address, address, user);
+			//UserInfo userInfo = new UserInfo(null, null, null, null, null, user);
 			session.persist(userInfo);
 			assertNotNull(userInfo.getUser(),"The user do not added");
 			assertNotNull(session.get(UserInfo.class, user.getId()),"The user index do not equal to userInfo index.");
-			txn.rollback();
-			//txn.commit();
+			//txn.rollback();
+			txn.commit();
 		} catch (Exception e) {
 			if(txn != null) { txn.rollback(); }
 			e.printStackTrace();
 		}		
 	}
+	
+	
 
 }
