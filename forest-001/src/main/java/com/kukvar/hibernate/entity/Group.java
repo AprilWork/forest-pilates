@@ -1,5 +1,8 @@
 package com.kukvar.hibernate.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity(name="classes")
@@ -29,6 +33,9 @@ public class Group {
 	@ManyToOne(cascade = {CascadeType.PERSIST})
 	@JoinColumn(name="type_id" )
 	private Category category;
+	
+	@OneToMany(mappedBy="group", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+	private Set<Activity> activities = new HashSet<Activity>();
 
 	protected Group() {	}
 
@@ -40,14 +47,6 @@ public class Group {
 		this.category = category;
 	}
 
-	/*
-	public Group(String name, String description) {
-		super();
-		this.name = name;
-		this.description = description;
-		this.nameImageFile = imageNameHelper("");
-	}
-	 */
 
 	private String imageNameHelper(String image) {
 		if (image == null || image.isBlank()) { return "default.jpg"; }
@@ -93,11 +92,28 @@ public class Group {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
+	
+	
+	public Set<Activity> getActivities() {
+		return activities;
+	}
+
+	public void addActivitiy(Activity activity) {
+		activities.add(activity);
+		activity.setGroup(this);
+	}
+
+	public void removeActivitiy(Activity activity) {
+		activities.remove(activity);
+		activity.setGroup(null);
+	}
 
 	@Override
 	public String toString() {
-		return "Group [id=" + id + ", name=" + name + ", description=" + description + ", nameImageFile=" + nameImageFile
-				+ ", category=" + category.getName() + "]";
+		return "Group [name=" + name + ", description=" + description + ", nameImageFile=" + nameImageFile + ", category="
+				+ category + ", activities=" + activities + "]";
 	}
+
+
 
 }

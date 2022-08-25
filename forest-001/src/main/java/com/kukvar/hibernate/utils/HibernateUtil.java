@@ -5,11 +5,14 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
+import com.kukvar.hibernate.entity.Activity;
 import com.kukvar.hibernate.entity.Category;
 import com.kukvar.hibernate.entity.User;
 import com.kukvar.hibernate.entity.UserInfo;
 import com.kukvar.hibernate.entity.Files;
 import com.kukvar.hibernate.entity.Group;
+import com.kukvar.hibernate.entity.Instructor;
 
 public class HibernateUtil {
 	
@@ -26,7 +29,9 @@ public class HibernateUtil {
         			.addAnnotatedClass(Category.class)
         			.addAnnotatedClass(User.class)
         			.addAnnotatedClass(UserInfo.class)
-        			.addAnnotatedClass(Files.class)        		
+        			.addAnnotatedClass(Files.class)
+        			.addAnnotatedClass(Instructor.class)
+        			.addAnnotatedClass(Activity.class)
           		.getMetadataBuilder().build();
           return metadata.getSessionFactoryBuilder().build();
         }
