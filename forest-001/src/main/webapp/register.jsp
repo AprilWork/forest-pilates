@@ -41,8 +41,8 @@
             </div>
             
  				<div class="form-group">
-             <label for="phone">EMAIL:</label>
-            <input type="tel" name="phone" class="form-control" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required="required" placeholder="Your Phone Number" data-rule="phone" data-msg="Please enter a valid phone">
+             <label for="phone">PHONE:</label>
+            <input type="tel" name="phone" class="form-control" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required="required" placeholder="000-000-0000" data-rule="tel" data-msg="Please enter a valid phone">
             <div class="validate"></div>
             </div>           
             
