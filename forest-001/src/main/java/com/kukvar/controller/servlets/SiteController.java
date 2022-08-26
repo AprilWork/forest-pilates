@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class SiteController
  */
-@WebServlet("/")
+@WebServlet("/home")
 public class SiteController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -33,7 +33,7 @@ public class SiteController extends HttpServlet {
 			break;
 		}
 		default:
-			//request.getRequestDispatcher("/");
+			request.getRequestDispatcher("/home");
 			break;
 		}
 	}

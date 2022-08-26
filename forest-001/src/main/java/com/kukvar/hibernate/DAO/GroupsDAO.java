@@ -1,6 +1,5 @@
 package com.kukvar.hibernate.DAO;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -88,7 +87,7 @@ public class GroupsDAO {
 
 	}
 
-	public void deleteGroup(int id) throws SQLIntegrityConstraintViolationException {
+	public void deleteGroup(int id) {
 		Session session = factory.openSession();
 		Transaction txn = session.getTransaction();
 		try {
@@ -100,15 +99,8 @@ public class GroupsDAO {
 			txn.commit();
 		} catch (Exception e) {
 			if (txn != null) {
-				txn.rollback();
-			}
-			if (e.getCause() != null && e.getCause().getCause() instanceof SQLIntegrityConstraintViolationException) {
-				SQLIntegrityConstraintViolationException sql_violation_exception = (SQLIntegrityConstraintViolationException) e
-						.getCause().getCause();
-				throw sql_violation_exception;
-			} else {
 				e.printStackTrace();
-				throw e;
+				txn.rollback();
 			}
 		} finally {
 			if (session != null) {

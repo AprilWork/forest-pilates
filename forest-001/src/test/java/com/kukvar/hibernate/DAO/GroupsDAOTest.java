@@ -128,7 +128,7 @@ class GroupsDAOTest {
 	final void testDeleteGroup() {
 		try {
 			new GroupsDAO().deleteGroup(id);
-		} catch (SQLIntegrityConstraintViolationException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

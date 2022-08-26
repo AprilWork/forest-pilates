@@ -1,14 +1,22 @@
 package com.kukvar.model;
 
-public class UserForGoogle {
+public class SignedUser {
 	public String id, email, picture;
 	private boolean verified_email;
 	
-	public UserForGoogle() {
+	public SignedUser() {
 		super();
 	}
+	
 
-	public UserForGoogle(String id, String email, String picture, boolean verified_email) {
+	public SignedUser(String email) {
+		super();
+		this.email = email;
+	}
+
+
+
+	public SignedUser(String id, String email, String picture, boolean verified_email) {
 		super();
 		this.id = id;
 		this.email = email;

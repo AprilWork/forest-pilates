@@ -18,7 +18,7 @@ public class UsersDAO {
 	Transaction txn;
 	
 	
-	public void registerUser(int id, String first_name, String last_name, LocalDate dateBirth,
+	public void registerUser(String first_name, String last_name, LocalDate dateBirth,
 			Address homeAddress, Address billingAddress, String email, String password, String phone) {
 		session = factory.openSession();
 		txn = session.getTransaction();
@@ -27,9 +27,11 @@ public class UsersDAO {
 			User user = new User(email, password, phone);
 			UserInfo userInfo = new UserInfo(first_name, last_name, dateBirth,
 			homeAddress, billingAddress, user);
-			session.persist(userInfo);
+			session.save(userInfo);
+			//session.persist(userInfo);
 			txn.commit();
 		} catch (Exception e) {
+			e.printStackTrace();
 			if(txn != null) { txn.rollback(); }
 		} finally {
 			if(session != null) { 
@@ -47,6 +49,7 @@ public class UsersDAO {
 			id = (int) session.save(userInfo);
 			txn.commit(); 
 		} catch (Exception e) {
+			e.printStackTrace();
 			if(txn != null) { txn.rollback(); }
 		} finally {
 			if(session != null) { 
@@ -65,6 +68,7 @@ public class UsersDAO {
 			users = session.createQuery("from user_info").getResultList();
 			session.getTransaction().commit();			
 		} catch (Exception e) {
+			e.printStackTrace();
 			if(txn != null) { txn.rollback(); }
 		} finally {
 			if(session != null) { 
@@ -87,6 +91,7 @@ public class UsersDAO {
 			userInfo.setBillingAddress(billingAddress);
 			txn.commit();
 		} catch (Exception e) {
+			e.printStackTrace();
 			if(txn != null) { txn.rollback(); }
 		} finally {
 			if(session != null) { 
@@ -104,6 +109,7 @@ public class UsersDAO {
 			userInfo = (UserInfo) session.createQuery(queryString).getSingleResult();
 			txn.commit(); 
 		} catch (Exception e) {
+			e.printStackTrace();
 			if(txn != null) { txn.rollback(); }
 		} finally {
 			if(session != null) { 
@@ -121,6 +127,7 @@ public class UsersDAO {
 			userInfo = session.get(UserInfo.class, id);
 			txn.commit(); 
 		} catch (Exception e) {
+			e.printStackTrace();
 			if(txn != null) { txn.rollback(); }
 		} finally {
 			if(session != null) { 
@@ -138,6 +145,7 @@ public class UsersDAO {
 			user = session.get(UserInfo.class, id).getUser();
 			txn.commit(); 
 		} catch (Exception e) {
+			e.printStackTrace();
 			if(txn != null) { txn.rollback(); }
 		} finally {
 			if(session != null) { 
@@ -158,6 +166,7 @@ public class UsersDAO {
 			user.setPassword(password);
 			txn.commit(); 
 		} catch (Exception e) {
+			e.printStackTrace();
 			if(txn != null) { txn.rollback(); }
 		} finally {
 			if(session != null) { 
@@ -175,6 +184,7 @@ public class UsersDAO {
 			size =  session.createQuery(queryString).getResultList().size();
 			txn.commit(); 
 		} catch (Exception e) {
+			e.printStackTrace();
 			if(txn != null) { txn.rollback(); }
 		} finally {
 			if(session != null) { 
@@ -197,6 +207,7 @@ public class UsersDAO {
 				}	
 			txn.commit(); 
 		} catch (Exception e) {
+			e.printStackTrace();
 			if(txn != null) { txn.rollback(); }
 		} finally {
 			if(session != null) { 
@@ -215,6 +226,7 @@ public class UsersDAO {
 				}	
 			txn.commit(); 
 		} catch (Exception e) {
+			e.printStackTrace();
 			if(txn != null) { txn.rollback(); }
 		} finally {
 			if(session != null) { 
