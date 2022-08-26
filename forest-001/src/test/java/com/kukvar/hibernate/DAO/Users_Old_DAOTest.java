@@ -22,7 +22,7 @@ import com.kukvar.hibernate.entity.UserInfo;
 
 @Disabled("Disabled until bug #99 has been fixed")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class UserInfoDAOTest {
+class Users_Old_DAOTest {
 	private static final String EMAIL = "tester@yahoo.com";
 	private static final String FIRST_NAME = "Peter";
 	private static final String LAST_NAME = "Tester";
@@ -36,6 +36,10 @@ class UserInfoDAOTest {
 	private static UserInfo testedUserInfo;
 	static int id, id2;	
 
+	
+	
+	
+/*	
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		User user = new User(EMAIL, "hello", PHONE);
@@ -117,5 +121,5 @@ class UserInfoDAOTest {
 		}
 		assertNull(new UserInfoDAO().getUserInfo(id), "The userInfo do not deleted.");			
 	}
-
+*/
 }

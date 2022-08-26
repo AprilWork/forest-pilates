@@ -1,110 +1,185 @@
 package com.kukvar.hibernate.DAO;
 
-import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import com.kukvar.hibernate.entity.Address;
 import com.kukvar.hibernate.entity.User;
+import com.kukvar.hibernate.entity.UserInfo;
 import com.kukvar.hibernate.utils.HibernateUtil;
 
 public class UsersDAO {
 	SessionFactory factory = HibernateUtil.getSessionFactory();
-
-	public int addUserDetails(User user) throws SQLIntegrityConstraintViolationException {
-		Session session = factory.openSession();
-		Transaction txn = session.getTransaction();
-		int id = -1;
+	static Session session;
+	Transaction txn;
+	
+	
+	public void registerUser(int id, String first_name, String last_name, LocalDate dateBirth,
+			Address homeAddress, Address billingAddress, String email, String password, String phone) {
+		session = factory.openSession();
+		txn = session.getTransaction();
 		try {
 			txn.begin();
-			id = (int) session.save(user);
-			txn.commit(); 
-		} catch (Exception e) {
-			if(txn != null) { txn.rollback(); }
-
-			if(e.getCause() != null 
-					&& e.getCause() instanceof SQLIntegrityConstraintViolationException) {
-				SQLIntegrityConstraintViolationException sql_violation_exception = (SQLIntegrityConstraintViolationException) e.getCause();
-				throw sql_violation_exception;
-			} else {
-				throw e;
-				//e.printStackTrace();
-			}
-		} finally {
-			if(session != null) { 
-				session.close();  }			
-		}
-		return id;
-	}	
-
-	public List<User> listUsers() {
-		Session session = factory.openSession();
-		session.beginTransaction();
-		@SuppressWarnings("unchecked")
-		List<User> users = session.createQuery("from users").getResultList();
-		session.getTransaction().commit();
-		session.close();
-		return users;
-	}	
-
-	public void updateInformation(int id, String email) throws SQLIntegrityConstraintViolationException {
-		Session session = factory.openSession();
-		Transaction txn = session.getTransaction();
-		try {
-			txn.begin();
-			User user = session.get(User.class, id);
-			user.setEmail(email);
+			User user = new User(email, password, phone);
+			UserInfo userInfo = new UserInfo(first_name, last_name, dateBirth,
+			homeAddress, billingAddress, user);
+			session.persist(userInfo);
 			txn.commit();
 		} catch (Exception e) {
 			if(txn != null) { txn.rollback(); }
-			if(e.getCause() != null 
-					&& e.getCause().getCause() instanceof SQLIntegrityConstraintViolationException) {
-				SQLIntegrityConstraintViolationException sql_violation_exception = (SQLIntegrityConstraintViolationException) e.getCause().getCause();
-				throw sql_violation_exception;
-			} else {
-				//e.printStackTrace();
-				throw e;
-			}
 		} finally {
 			if(session != null) { 
 				session.close();  }
 		}
+	}		
+	
+	
+	public int addUser(UserInfo userInfo) {
+		session = factory.openSession();
+		txn = session.getTransaction();
+		int id = -1;
+		try {
+			txn.begin();
+			id = (int) session.save(userInfo);
+			txn.commit(); 
+		} catch (Exception e) {
+			if(txn != null) { txn.rollback(); }
+		} finally {
+			if(session != null) { 
+				session.close();  }	
+		}
+		return id;
+	}
 
+
+	public List<UserInfo> listUsers() {
+		session = factory.openSession();
+		txn = session.getTransaction();
+		List<UserInfo> users = null;
+		try {
+			session.beginTransaction();
+			users = session.createQuery("from user_info").getResultList();
+			session.getTransaction().commit();			
+		} catch (Exception e) {
+			if(txn != null) { txn.rollback(); }
+		} finally {
+			if(session != null) { 
+				session.close();  }	
+		}
+		return users;
+	}	
+
+	public void updateUserInformation(int id, String first_name, String last_name, LocalDate dateBirth,
+			Address homeAddress, Address billingAddress) {
+		session = factory.openSession();
+		txn = session.getTransaction();
+		try {
+			txn.begin();
+			UserInfo userInfo = session.get(UserInfo.class, id);
+			userInfo.setFirst_name(first_name);
+			userInfo.setLast_name(last_name);
+			userInfo.setDateBirth(dateBirth);
+			userInfo.setHomeAddress(homeAddress);
+			userInfo.setBillingAddress(billingAddress);
+			txn.commit();
+		} catch (Exception e) {
+			if(txn != null) { txn.rollback(); }
+		} finally {
+			if(session != null) { 
+				session.close();  }
+		}
+	}	
+
+	public UserInfo getUserInfo(String email) {
+		session = factory.openSession();
+		txn = session.getTransaction();
+		UserInfo userInfo = null;
+		try {
+			txn.begin();
+			String queryString = "from users where email = '"+email+"'";
+			userInfo = (UserInfo) session.createQuery(queryString).getSingleResult();
+			txn.commit(); 
+		} catch (Exception e) {
+			if(txn != null) { txn.rollback(); }
+		} finally {
+			if(session != null) { 
+				session.close();  }	
+		}
+		return userInfo;		
+	}	
+
+	public UserInfo getUserInfo(int id) {
+		session = factory.openSession();
+		txn = session.getTransaction();
+		UserInfo userInfo = null;
+		try {
+			txn.begin();
+			userInfo = session.get(UserInfo.class, id);
+			txn.commit(); 
+		} catch (Exception e) {
+			if(txn != null) { txn.rollback(); }
+		} finally {
+			if(session != null) { 
+				session.close();  }	
+		}
+		return userInfo;		
 	}	
 
 	public User getUser(int id) {
-		Session session = factory.openSession();
-		session.beginTransaction();
-		User user = session.get(User.class, id);
-		session.getTransaction().commit();
-		session.close();
-		return user;
+		session = factory.openSession();
+		txn = session.getTransaction();
+		User user = null;
+		try {
+			txn.begin();
+			user = session.get(UserInfo.class, id).getUser();
+			txn.commit(); 
+		} catch (Exception e) {
+			if(txn != null) { txn.rollback(); }
+		} finally {
+			if(session != null) { 
+				session.close();  }	
+		}
+		return user;	
+	}
+	
+	public void updateUser(int id, String email, String password, String phone) {
+		session = factory.openSession();
+		txn = session.getTransaction();
+		User user = null;
+		try {
+			txn.begin();
+			user = session.get(User.class, id);
+			user.setEmail(email);
+			user.setPhone(phone);
+			user.setPassword(password);
+			txn.commit(); 
+		} catch (Exception e) {
+			if(txn != null) { txn.rollback(); }
+		} finally {
+			if(session != null) { 
+				session.close();  }	
+		}	
 	}	
 
-	public User getUser(String email) {
-		Session session = factory.openSession();
-		session.beginTransaction();
-		String queryString = "from users where email = '"+email+"'";
-		User user;
-		try {
-			user = (User) session.createQuery(queryString).getSingleResult();
-		} catch (Exception e) {
-			// TODO: handle exception
-			return null;
-		}
-		session.getTransaction().commit();
-		session.close();
-		return user;
-	}
-
 	public boolean isExisted(String email) {
-		Session session = factory.openSession();
-		session.beginTransaction();
-		String queryString = "from users where email = '"+email+"'";
-		int size =  session.createQuery(queryString).getResultList().size();
-		session.close();
+		session = factory.openSession();
+		txn = session.getTransaction();
+		int size = 0;
+		try {
+			txn.begin();
+			String queryString = "from users where email = '"+email+"'";
+			size =  session.createQuery(queryString).getResultList().size();
+			txn.commit(); 
+		} catch (Exception e) {
+			if(txn != null) { txn.rollback(); }
+		} finally {
+			if(session != null) { 
+				session.close();  }	
+		}
 		if (size == 0) {
 			return false;
 		} else {
@@ -112,31 +187,39 @@ public class UsersDAO {
 		}
 	}	
 
-	public void deleteUser(int id) throws SQLIntegrityConstraintViolationException {
-		Session session = factory.openSession();
-		Transaction txn = session.getTransaction();
+	public void deleteUser(UserInfo userInfo){
+		session = factory.openSession();
+		txn = session.getTransaction();
+		try {
+			txn.begin();
+			if (userInfo != null) {
+				session.delete(userInfo);	
+				}	
+			txn.commit(); 
+		} catch (Exception e) {
+			if(txn != null) { txn.rollback(); }
+		} finally {
+			if(session != null) { 
+				session.close();  }	
+		}
+	}
+
+	public void deleteUser(int id){
+		session = factory.openSession();
+		txn = session.getTransaction();
 		try {
 			txn.begin();
 			User user = session.get(User.class, id);
 			if (user != null) {
-				session.delete(user);
-			}			
-			txn.commit();
+				session.delete(user);	
+				}	
+			txn.commit(); 
 		} catch (Exception e) {
 			if(txn != null) { txn.rollback(); }
-			if(e.getCause() != null 
-					&& e.getCause().getCause() instanceof SQLIntegrityConstraintViolationException) {
-				SQLIntegrityConstraintViolationException sql_violation_exception = (SQLIntegrityConstraintViolationException) e.getCause().getCause();
-				throw sql_violation_exception;
-			} else {
-				//e.printStackTrace();
-				throw e;
-			}
 		} finally {
 			if(session != null) { 
-				session.close();  }
-		}			
-
+				session.close();  }	
+		}
 	}
 
 }
