@@ -69,6 +69,18 @@
         <version>8.0.29</version>
         <!--<scope>provided</scope> -->
     </dependency>
+    <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
+    <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>jstl</artifactId>
+        <version>1.2</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+    <dependency>
+        <groupId>commons-fileupload</groupId>
+        <artifactId>commons-fileupload</artifactId>
+        <version>1.4</version>
+    </dependency>
 	<!-- https://mvnrepository.com/artifact/log4j/log4j -->
 	<dependency>
 	    <groupId>log4j</groupId>
