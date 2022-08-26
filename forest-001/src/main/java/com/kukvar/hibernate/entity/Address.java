@@ -6,11 +6,8 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Address {
 	
-	@SuppressWarnings("unused")
 	private String street;
-	@SuppressWarnings("unused")
 	private String city;
-	@SuppressWarnings("unused")
 	private String zipcode;
 	
 	public Address() {}

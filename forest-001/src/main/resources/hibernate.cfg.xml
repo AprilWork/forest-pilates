@@ -29,7 +29,7 @@
         <!-- <property name="hbm2ddl.auto">create-drop</property>   --> 
         
         <!-- Create/update tables automatically using mapping metadata -->
-        <property name="hbm2ddl.auto">update</property>
+        <!-- <property name="hbm2ddl.auto">update</property> -->
              
     <!--Setting Session context model -->
     <property name="current_session_context_class">thread</property>

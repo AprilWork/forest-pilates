@@ -1,6 +1,6 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
-<c:import url="assets/include/header.jsp"><c:param name="title" value="About"/></c:import>
+<c:import url="assets/include/header.jsp"><c:param name="title" value="Welcome User"/></c:import>
 
 
   <!-- *****************************************************************************************************************
@@ -9,7 +9,7 @@
   <div id="blue">
     <div class="container">
       <div class="row">
-        <h3>About.</h3>
+        <h3>Welcome User.</h3>
       </div>
       <!-- /row -->
     </div>

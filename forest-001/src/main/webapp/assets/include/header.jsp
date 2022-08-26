@@ -57,12 +57,12 @@
        
 <%@ page import="com.kukvar.model.SignedUser" %>
 
-<%! SignedUser user; String email, hello, newnavbar;%>
+<%! SignedUser signedUser; String email, hello, newnavbar;%>
 
 <%
-if (session.getAttribute("User") != null) {
-	user = (SignedUser) session.getAttribute("SignedUser");
-	email = user.getEmail();
+if (session.getAttribute("SignedUser") != null) {
+	signedUser = (SignedUser) session.getAttribute("SignedUser");
+	email = signedUser.getEmail();
 	hello = "HELLO USER "+email;
 	newnavbar = "customernavbar.jsp";
 } else {

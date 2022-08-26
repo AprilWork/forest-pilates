@@ -59,6 +59,7 @@ public class LogingController extends HttpServlet {
 		String action = request.getParameter("action_");
 		switch (action) {
 		case "register": {
+			System.out.println("doPost: register action");
 			register(request,response);
 			break;
 		}		
@@ -76,10 +77,12 @@ public class LogingController extends HttpServlet {
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		System.out.println("new Customer : "+email);
-		User user = new User( email, password, "1112223334");
+		String phone = request.getParameter("phone");
+		System.out.println("Registering new Customer : "+email);
+		User user = new User( email, password, phone);
+		System.out.println("New Customer: "+user.toString());
 			try {
-				new UsersDAO().registerUser(name, name, null, null, null, email, password, null);
+				new UsersDAO().registerUser(name, name, null, null, null, email, password, phone);
 				signin(request,response);
 			} catch (Exception e) {
 				System.out.println(e.toString());
@@ -91,8 +94,11 @@ public class LogingController extends HttpServlet {
 		//String username = request.getParameter("username");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
+		String phone = request.getParameter("phone");
+		System.out.println("Registering new Customer : ");		
 		System.out.println("email: "+email);
 		System.out.println("password : "+password);
+		System.out.println("phone : "+phone);
 		
 		if(! new UsersDAO().isExisted(email)) {
 			response.sendRedirect("login.jsp");
@@ -103,10 +109,10 @@ public class LogingController extends HttpServlet {
 			newSession.setMaxInactiveInterval(300);
 			//newSession.setAttribute("username", username);
 			newSession.setAttribute("email", email);
-			SignedUser user = new SignedUser(email);
+			SignedUser signedUser = new SignedUser(email);
 
-			newSession.setAttribute("SignedUser",user);
-			response.sendRedirect("about.jsp");		
+			newSession.setAttribute("SignedUser",signedUser);
+			response.sendRedirect("welcome_user.jsp");		
 		}		
 	}
 	
