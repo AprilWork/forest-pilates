@@ -4,5 +4,5 @@
 	data-toggle="dropdown">${param.title}<b class="caret"></b></a>
 	<ul class="dropdown-menu">
 		<li><a
-			href="${pageContext.request.contextPath}/login?_action=logout">LOGOUT</a></li>
+			href="${pageContext.request.contextPath}/login?action=logout">LOGOUT</a></li>
 	</ul></li>

@@ -9,7 +9,7 @@
   <div id="blue">
     <div class="container">
       <div class="row">
-        <h3>Register.</h3>
+        <h3>Create an Account.</h3>
       </div>
       <!-- /row -->
     </div>
@@ -24,7 +24,10 @@
         <div class="hline"></div>
 			<p></p>
 			<!-- Register Form -->
-        <form class="form white-text" action="<%= request.getContextPath()%>/login?action_=register" method="POST">
+        <form class="form white-text" action="<%= request.getContextPath()%>/login?action=registerin" method="POST">
+				
+				<p>${message}</p>
+        <p>${email}</p>
 				
 				<div class="form-group">
 					<label for="femail">FULL NAME:</label> 
@@ -61,7 +64,8 @@
           <div class="error-message"></div>
             
           <div class="form-send">
-            <button type="submit" class="btn btn-theme btn-white mt30">REGISTER</button>
+            <input type="hidden" name="action" value="registerin">
+            <button type="submit" class="btn btn-theme btn-white mt30">Create an Account</button>
           </div>
           
           <div class="form-group">

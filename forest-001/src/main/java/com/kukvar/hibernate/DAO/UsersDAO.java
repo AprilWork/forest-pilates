@@ -154,6 +154,30 @@ public class UsersDAO {
 		return user;	
 	}
 	
+	public boolean validatePassword(String email, String password) {
+		session = factory.openSession();
+		txn = session.getTransaction();
+		boolean valid = false;
+		try {
+			txn.begin();
+			String queryString = "from users where email = '"+email+"'";
+			User user = ((User) session.createQuery(queryString).getSingleResult());
+			if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
+				valid = true;
+			}
+			session.detach(user);
+			user.setPassword("*************************");
+			txn.commit(); 
+		} catch (Exception e) {
+			if(txn != null) { txn.rollback(); }
+			e.printStackTrace();
+		} finally {
+			if(session != null) { 
+				session.close();  }	
+		}
+		return valid;
+	}	
+	
 	public void updateUser(int id, String email, String password, String phone) {
 		session = factory.openSession();
 		txn = session.getTransaction();

@@ -25,17 +25,15 @@ public class LogingController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 	
-		String action = request.getParameter("_action");
+		String action = request.getParameter("action");
 		switch (action) {
 		case "logout" :
 			logout(request,response);
 			break;
 		case "login" :
 			response.sendRedirect("login.jsp");
-			break;
+			break;			
 		case "register" :
-			//String button = request.getParameter("email");
-			//System.out.println("value : "+button);
 			response.sendRedirect("register.jsp");
 			break;
 		case "sign_with_google": {
@@ -56,10 +54,10 @@ public class LogingController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String action = request.getParameter("action_");
+		String action = request.getParameter("action");
 		switch (action) {
-		case "register": {
-			System.out.println("doPost: register action");
+		case "registerin": {
+			//System.out.println("doPost: register action");
 			register(request,response);
 			break;
 		}		
@@ -67,10 +65,45 @@ public class LogingController extends HttpServlet {
 			signin(request,response);
 			break;
 		}
+		case "password": {
+			password(request,response);
+			break;
+		}		
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + action);
 		}
 		
+	}
+
+	private void password(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		// TODO Auto-generated method stub
+		//String emailFromRequest = request.getParameter("email");
+		String emailFromAttribute = (String) request.getSession().getAttribute("email");
+		//System.out.println("email from request parameter:"+emailFromRequest);
+		System.out.println("email from attribute:"+emailFromAttribute);
+		if (validatePassword(emailFromAttribute, request.getParameter("password"))) {
+			//Invalidating session if any
+			request.getSession().invalidate();
+			HttpSession newSession = request.getSession(true);
+			newSession.setMaxInactiveInterval(300);
+			
+			//newSession.setAttribute("username", username);
+			newSession.setAttribute("email", emailFromAttribute);
+			SignedUser signedUser = new SignedUser(emailFromAttribute);
+
+			newSession.setAttribute("SignedUser",signedUser);
+			response.sendRedirect("welcome_user.jsp");	
+		} else {
+			
+		}
+	}
+	
+	private boolean validatePassword(String email,String password) {
+		if (email == null) {
+			return false;
+		} else {
+		return new UsersDAO().validatePassword(email, password);
+		}
 	}
 
 	private void register(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -83,36 +116,28 @@ public class LogingController extends HttpServlet {
 		System.out.println("New Customer: "+user.toString());
 			try {
 				new UsersDAO().registerUser(name, name, null, null, null, email, password, phone);
-				signin(request,response);
-			} catch (Exception e) {
-				System.out.println(e.toString());
+				String message = "You are successfully registered. Please login in your account.";
+				request.getSession().setAttribute("message", message);
 				response.sendRedirect("login.jsp");
+			} catch (Exception e) {
+				e.printStackTrace();
+				response.sendRedirect("register.jsp");
 			}
 	}
 
-	private void signin(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		//String username = request.getParameter("username");
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-		String phone = request.getParameter("phone");
-		System.out.println("Registering new Customer : ");		
-		System.out.println("email: "+email);
-		System.out.println("password : "+password);
-		System.out.println("phone : "+phone);
-		
+	private void signin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		String email = request.getParameter("email");	
 		if(! new UsersDAO().isExisted(email)) {
-			response.sendRedirect("login.jsp");
+			String message = "We're sorry, the email you entered is incorrect. Please try again or reset your password.";
+			request.getSession().setAttribute("message", message);
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+			//response.sendRedirect("login.jsp");
 		} else {
-			//Invalidating session if any
-			request.getSession().invalidate();
-			HttpSession newSession = request.getSession(true);
-			newSession.setMaxInactiveInterval(300);
-			//newSession.setAttribute("username", username);
-			newSession.setAttribute("email", email);
-			SignedUser signedUser = new SignedUser(email);
-
-			newSession.setAttribute("SignedUser",signedUser);
-			response.sendRedirect("welcome_user.jsp");		
+			String message = "Please enter password.";
+			request.getSession().setAttribute("message", message);
+			request.getSession().setAttribute("email", email);
+			request.getRequestDispatcher("password.jsp").forward(request, response);
+			//response.sendRedirect("password.jsp");		
 		}		
 	}
 	
