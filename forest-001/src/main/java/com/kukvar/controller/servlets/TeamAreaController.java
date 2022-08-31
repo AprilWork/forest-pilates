@@ -38,7 +38,11 @@ public class TeamAreaController extends HttpServlet {
 
 		String action = request.getParameter("action");
 		if (action == null) {
-			response.sendRedirect("loginTeam.jsp");
+			if (request.getSession().getAttribute("SignedTeamUser") != null) {
+				response.sendRedirect("index.jsp");
+			} else {
+				response.sendRedirect("loginTeam.jsp");
+			}
 		} else {
 			switch (action) {
 			case "login":
@@ -89,7 +93,7 @@ public class TeamAreaController extends HttpServlet {
 			newSession.setAttribute("email", email);
 			SignedTeamUser signedTeamUser = new SignedTeamUser(email);
 			newSession.setAttribute("SignedTeamUser",signedTeamUser);
-			response.sendRedirect("welcome_admin.jsp");	
+			response.sendRedirect("index.jsp");	
 		} else {
 			response.sendRedirect("loginTeam.jsp");	
 		}

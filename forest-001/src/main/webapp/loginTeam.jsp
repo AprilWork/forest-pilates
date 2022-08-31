@@ -1,6 +1,6 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
-<c:import url="assets/include/teamheader.jsp"><c:param name="title" value="Happy Heart"/></c:import>
+<c:import url="assets/include/header.jsp"><c:param name="title" value="Happy Heart"/></c:import>
 
   <!-- *****************************************************************************************************************
    BLUE WRAP

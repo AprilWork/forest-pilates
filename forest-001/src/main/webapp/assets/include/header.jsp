@@ -55,29 +55,27 @@
           <li><a href="contact.jsp">CONTACT</a></li>
           <li><a href="${pageContext.request.contextPath}/home?action=viewGroups">CLASSES</a></li>
        
-<%@ page import="com.kukvar.model.SignedUser" %>
-
-<%! SignedUser signedUser; String email, hello, newnavbar;%>
-
-<%
-if (session.getAttribute("SignedUser") != null) {
-	signedUser = (SignedUser) session.getAttribute("SignedUser");
-	email = signedUser.getEmail();
-	hello = "HELLO USER "+email;
-	newnavbar = "customernavbar.jsp";
-} else {
-	hello = "WELCOME GUEST";
-	newnavbar = "pagesnavbar.jsp";
-}
-%>
-
-<jsp:include page="<%=newnavbar %>"><jsp:param name="title" value="<%=hello %>"></jsp:param></jsp:include>
 
 
+<c:choose>
 
+  <c:when test="${SignedTeamUser != null }">
+  <c:set var = "forestuser" scope = "session" value = "${SignedTeamUser.getEmail()}"/>
+  <c:import url="/assets/include/teamnavbar.jsp"><c:param name="mytitle" value="Welcome ${forestuser}"></c:param></c:import>   
+  </c:when>
+  
+  <c:when test="${SignedUser != null }">
+  <c:set var = "forestuser" scope = "session" value = "${SignedUser.getEmail()}"/>
+  <c:import url="/assets/include/customernavbar.jsp"><c:param name="mytitle" value="Welcome ${forestuser}"></c:param></c:import>   
+  </c:when>
+  
+  <c:otherwise>
+  <c:set var = "forestuser" scope = "session" value = "ACCOUNT"/>
+  <c:import url="/assets/include/pagesnavbar.jsp"><c:param name="mytitle" value="${forestuser}"></c:param> </c:import>  
+  </c:otherwise>
 
+</c:choose>
 
-      
         </ul>
       </div>
       <!--/.nav-collapse -->
