@@ -15,7 +15,7 @@ public class CategoryDAO {
 	private SessionFactory factory = HibernateUtil.getSessionFactory();
 
 	public int addCategoryDetails(Category category) throws SQLIntegrityConstraintViolationException {
-		Session session = factory.openSession();
+		Session session = factory.getCurrentSession();
 		Transaction txn = session.getTransaction();
 		int id = -1;
 		try {
@@ -26,15 +26,6 @@ public class CategoryDAO {
 			if (txn != null) {
 				txn.rollback();
 			}
-
-			if (e.getCause() != null && e.getCause() instanceof SQLIntegrityConstraintViolationException) {
-				SQLIntegrityConstraintViolationException sql_violation_exception = (SQLIntegrityConstraintViolationException) e
-						.getCause();
-				throw sql_violation_exception;
-			} else {
-				throw e;
-				// e.printStackTrace();
-			}
 		} finally {
 			if (session != null) {
 				session.close();
@@ -43,17 +34,19 @@ public class CategoryDAO {
 		return id;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Category> listCategory() {
-		Session session = factory.openSession();
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
 		List<Category> category = null;
 		try {
-			session.beginTransaction();
+			txn.begin();
 			category = session.createQuery("from class_type").getResultList();
-			session.getTransaction().commit();			
+			txn.commit();			
 		}catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			throw e;
+			if (txn != null) {
+				txn.rollback();
+			}
 		} finally {
 			if (session != null) {
 				session.close(); 
@@ -63,7 +56,7 @@ public class CategoryDAO {
 	}
 
 	public void updateInformation(int id, String name) throws SQLIntegrityConstraintViolationException {
-		Session session = factory.openSession();
+		Session session = factory.getCurrentSession();
 		Transaction txn = session.getTransaction();
 		try {
 			txn.begin();
@@ -74,14 +67,6 @@ public class CategoryDAO {
 			if (txn != null) {
 				txn.rollback();
 			}
-			if (e.getCause() != null && e.getCause().getCause() instanceof SQLIntegrityConstraintViolationException) {
-				SQLIntegrityConstraintViolationException sql_violation_exception = (SQLIntegrityConstraintViolationException) e
-						.getCause().getCause();
-				throw sql_violation_exception;
-			} else {
-				e.printStackTrace();
-				throw e;
-			}
 		} finally {
 			if (session != null) {
 				session.close();
@@ -90,12 +75,17 @@ public class CategoryDAO {
 	}
 
 	public Category getCategory(int id) {
-		Session session = factory.openSession();
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
 		Category category = null;
 		try {
-			session.beginTransaction();
+			txn.begin();
 			category = session.get(Category.class, id);
-			session.getTransaction().commit();			
+			txn.commit();	
+		} catch (Exception e) {
+			if (txn != null) {
+				txn.rollback();
+			}			
 		} finally {
 			if (session != null) {
 				session.close();
@@ -105,37 +95,49 @@ public class CategoryDAO {
 	}
 
 	public Category getCategory(String name) {
-		Session session = factory.openSession();
-		session.beginTransaction();
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
 		String queryString = "from class_type where name = '" + name + "'";
-		Category category;
+		Category category = null;
 		try {
+			txn.begin();
 			category = (Category) session.createQuery(queryString).getSingleResult();
+			txn.commit();
 		} catch (Exception e) {
-			// TODO: handle exception
-			return null;
+			if (txn != null) {
+				txn.rollback();
+			}	
+		} finally {
+			if (session != null) {
+				session.close();
+			}	
 		}
-		session.getTransaction().commit();
-		session.close();
 		return category;
 	}
 
 	public boolean isExisted(String name) {
-		Session session = factory.openSession();
-		session.beginTransaction();
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
 		String queryString = "from class_type where name = '" + name + "'";
-		int size = session.createQuery(queryString).getResultList().size();
-		session.getTransaction().commit();
-		session.close();
-		if (size == 0) {
-			return false;
-		} else {
-			return true;
+		int size = 0;
+		try {
+			txn.begin();
+			size = session.createQuery(queryString).getResultList().size();
+			txn.commit();
+		} catch (Exception e) {
+			if (txn != null) {
+				txn.rollback();
+			}	
+		} finally {
+			if (session != null) {
+				session.close();
+			}				
 		}
+		return size != 0;
 	}
 
 	public void deleteCategory(int id) throws SQLIntegrityConstraintViolationException {
-		Session session = factory.openSession();
+		Session session = factory.getCurrentSession();
 		Transaction txn = session.getTransaction();
 		try {
 			txn.begin();
@@ -147,14 +149,6 @@ public class CategoryDAO {
 		} catch (Exception e) {
 			if (txn != null) {
 				txn.rollback();
-			}
-			if (e.getCause() != null && e.getCause().getCause() instanceof SQLIntegrityConstraintViolationException) {
-				SQLIntegrityConstraintViolationException sql_violation_exception = (SQLIntegrityConstraintViolationException) e
-						.getCause().getCause();
-				throw sql_violation_exception;
-			} else {
-				e.printStackTrace();
-				throw e;
 			}
 		} finally {
 			if (session != null) {
