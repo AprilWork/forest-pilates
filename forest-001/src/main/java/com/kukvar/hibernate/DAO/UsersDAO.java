@@ -14,14 +14,11 @@ import com.kukvar.hibernate.utils.HibernateUtil;
 
 public class UsersDAO {
 	SessionFactory factory = HibernateUtil.getSessionFactory();
-	static Session session;
-	Transaction txn;
-	
-	
+
 	public void registerUser(String first_name, String last_name, LocalDate dateBirth,
 			Address homeAddress, Address billingAddress, String email, String password, String phone) {
-		session = factory.openSession();
-		txn = session.getTransaction();
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
 		try {
 			txn.begin();
 			User user = new User(email, password, phone);
@@ -41,8 +38,8 @@ public class UsersDAO {
 	
 	
 	public int addUser(UserInfo userInfo) {
-		session = factory.openSession();
-		txn = session.getTransaction();
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
 		int id = -1;
 		try {
 			txn.begin();
@@ -60,8 +57,8 @@ public class UsersDAO {
 
 
 	public List<UserInfo> listUsers() {
-		session = factory.openSession();
-		txn = session.getTransaction();
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
 		List<UserInfo> users = null;
 		try {
 			session.beginTransaction();
@@ -79,8 +76,8 @@ public class UsersDAO {
 
 	public void updateUserInformation(int id, String first_name, String last_name, LocalDate dateBirth,
 			Address homeAddress, Address billingAddress) {
-		session = factory.openSession();
-		txn = session.getTransaction();
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
 		try {
 			txn.begin();
 			UserInfo userInfo = session.get(UserInfo.class, id);
@@ -100,8 +97,8 @@ public class UsersDAO {
 	}	
 
 	public UserInfo getUserInfo(String email) {
-		session = factory.openSession();
-		txn = session.getTransaction();
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
 		UserInfo userInfo = null;
 		try {
 			txn.begin();
@@ -119,8 +116,8 @@ public class UsersDAO {
 	}	
 
 	public UserInfo getUserInfo(int id) {
-		session = factory.openSession();
-		txn = session.getTransaction();
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
 		UserInfo userInfo = null;
 		try {
 			txn.begin();
@@ -137,8 +134,8 @@ public class UsersDAO {
 	}	
 
 	public User getUser(int id) {
-		session = factory.openSession();
-		txn = session.getTransaction();
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
 		User user = null;
 		try {
 			txn.begin();
@@ -155,8 +152,8 @@ public class UsersDAO {
 	}
 	
 	public boolean validatePassword(String email, String password) {
-		session = factory.openSession();
-		txn = session.getTransaction();
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
 		boolean valid = false;
 		try {
 			txn.begin();
@@ -179,8 +176,8 @@ public class UsersDAO {
 	}	
 	
 	public void updateUser(int id, String email, String password, String phone) {
-		session = factory.openSession();
-		txn = session.getTransaction();
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
 		User user = null;
 		try {
 			txn.begin();
@@ -199,8 +196,8 @@ public class UsersDAO {
 	}	
 
 	public boolean isExisted(String email) {
-		session = factory.openSession();
-		txn = session.getTransaction();
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
 		int size = 0;
 		try {
 			txn.begin();
@@ -222,8 +219,8 @@ public class UsersDAO {
 	}	
 
 	public void deleteUser(UserInfo userInfo){
-		session = factory.openSession();
-		txn = session.getTransaction();
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
 		try {
 			txn.begin();
 			if (userInfo != null) {
@@ -240,8 +237,8 @@ public class UsersDAO {
 	}
 
 	public void deleteUser(int id){
-		session = factory.openSession();
-		txn = session.getTransaction();
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
 		try {
 			txn.begin();
 			User user = session.get(User.class, id);
