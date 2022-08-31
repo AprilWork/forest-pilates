@@ -16,7 +16,8 @@ public class GroupsDAO {
 	SessionFactory factory = HibernateUtil.getSessionFactory();
 
 	public int addGroupDetails(Group group) {		
-		Session session = factory.openSession();
+		//Session session = factory.openSession();
+		Session session = factory.getCurrentSession();
 		Transaction txn = session.getTransaction();
 		int id = 0;
 		try {
@@ -38,7 +39,8 @@ public class GroupsDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Group> listGroups() {
-		Session session = factory.openSession();
+		//Session session = factory.openSession();
+		Session session = factory.getCurrentSession();
 		Transaction txn = session.getTransaction();
 		List<Group> groups = new ArrayList<>();
 		try {
@@ -59,7 +61,8 @@ public class GroupsDAO {
 	}
 
 	public void updateInformation(int id, String name, String description, String nameImageFile, Category category) {
-		Session session = factory.openSession();
+		//Session session = factory.openSession();
+		Session session = factory.getCurrentSession();
 		Transaction txn = session.getTransaction();
 		try {
 			txn.begin();
@@ -83,7 +86,8 @@ public class GroupsDAO {
 	}
 
 	public Group getGroup(int id) {
-		Session session = factory.openSession();
+		//Session session = factory.openSession();
+		Session session = factory.getCurrentSession();
 		Transaction txn = session.getTransaction();
 		Group group = null;
 		try {
@@ -104,7 +108,8 @@ public class GroupsDAO {
 	}
 
 	public Group getGroup(String name) {		
-		Session session = factory.openSession();
+		//Session session = factory.openSession();
+		Session session = factory.getCurrentSession();
 		Transaction txn = session.getTransaction();
 		String queryString = "from classes where name = '" + name + "'";
 		Group group = null;
@@ -126,7 +131,8 @@ public class GroupsDAO {
 	}
 
 	public boolean isExisted(String name) {			
-		Session session = factory.openSession();
+		//Session session = factory.openSession();
+		Session session = factory.getCurrentSession();
 		Transaction txn = session.getTransaction();
 		String queryString = "from classes where name = '" + name + "'";
 		Group group = null;
@@ -148,7 +154,8 @@ public class GroupsDAO {
 	}
 
 	public void deleteGroup(int id) {
-		Session session = factory.openSession();
+		//Session session = factory.openSession();
+		Session session = factory.getCurrentSession();
 		Transaction txn = session.getTransaction();
 		try {
 			txn.begin();
