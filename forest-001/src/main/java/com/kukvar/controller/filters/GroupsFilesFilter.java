@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 				}
 					, 
 		urlPatterns = {
+				//"/team",
 				"/classes",
 				"/FilesHandler"
 		}, 
@@ -40,21 +41,15 @@ public class GroupsFilesFilter extends HttpFilter implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		// TODO Auto-generated method stub
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
-		System.out.println("You are watched by GroupsFilter: "+req.getRequestURI());
-		System.out.println("I see Query String: "+req.getQueryString());
-		System.out.println("I see Query Parameter action: "+req.getParameter("action"));
-		if (req.getParameter("action").equals("viewGroups")) {
-			chain.doFilter(request, response);
-		} else {
-			if ((req.getSession(false) == null) || req.getSession(false).getAttribute("SignedUser") == null) {
-			System.out.println("You are not validated to such action.Please sign in.");
-			req.getSession().setAttribute("message", "");
-			resp.sendRedirect("login.jsp");
-			}
-		}
+
+		if ((req.getSession(false) == null) 
+				|| (req.getSession(false).getAttribute("SignedTeamUser") == null) ) {
+				resp.sendRedirect("loginTeam.jsp");	
+		}	else {
+				chain.doFilter(request, response);
+		} 
 			
 	}
 

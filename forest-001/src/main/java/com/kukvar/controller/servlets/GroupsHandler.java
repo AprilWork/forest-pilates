@@ -24,7 +24,11 @@ import com.kukvar.hibernate.entity.Group;
  */
 @WebServlet("/classes")
 public class GroupsHandler extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3831488347437627401L;
 	//public String path = "c:/images/"; 
 	public final String assetsImagePath = "assets/img/uploaded/";
 	public final String realPath = "C:/Users/irade/git/Booking/pilates/src/main/webapp/";

@@ -55,25 +55,9 @@
           <li><a href="contact.jsp">CONTACT</a></li>
           <li><a href="${pageContext.request.contextPath}/home?action=viewGroups">CLASSES</a></li>
        
-<%@ page import="com.kukvar.model.SignedUser" %>
-
-<%! SignedUser signedUser; String email, hello, newnavbar;%>
-
-<%
-if (session.getAttribute("SignedUser") != null) {
-	signedUser = (SignedUser) session.getAttribute("SignedUser");
-	email = signedUser.getEmail();
-	hello = "HELLO USER "+email;
-	newnavbar = "customernavbar.jsp";
-} else {
-	hello = "WELCOME GUEST";
-	newnavbar = "pagesnavbar.jsp";
-}
-%>
-
-<jsp:include page="<%=newnavbar %>"><jsp:param name="title" value="<%=hello %>"></jsp:param></jsp:include>
 
 
+<jsp:include page="teamnavbar.jsp"></jsp:include>
 
 
 
