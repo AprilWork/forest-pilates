@@ -26,45 +26,52 @@
 			<!-- Register Form -->
         <form class="form white-text" action="<%= request.getContextPath()%>/login?action=registerin" method="POST">
 				
-				<p>${message}</p>
-        <p>${email}</p>
+				<!--  <form class="contact-form php-mail-form" role="form" action="<%= request.getContextPath()%>/login?action=registerin" method="POST"> -->
 				
+				<p>${message}</p>
+         
 				<div class="form-group">
-					<label for="femail">FULL NAME:</label> 
-					<input type="text" name="name"
-						class="form-control" required="required" placeholder="Enter your full name"
-						data-rule="minlen:4" data-msg="Please enter at least 4 chars">
-					<div class="validate"></div>
-				</div>
-
-				<div class="form-group">
-             <label for="femail">EMAIL:</label>
-            <input type="email" name="email" class="form-control" required="required" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">
+             <label for="email">EMAIL:</label>
+            <input type="email" name="email" class="form-control" 
+            required="required" placeholder="Your Email">
             <div class="validate"></div>
             </div>
             
  				<div class="form-group">
              <label for="phone">PHONE:</label>
-            <input type="tel" name="phone" class="form-control" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required="required" placeholder="000-000-0000" data-rule="tel" data-msg="Please enter a valid phone">
+            <input type="tel" name="phone" class="form-control" 
+            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
+            required="required" placeholder="000-000-0000">
             <div class="validate"></div>
             </div>           
             
           <div class="form-group">
-            <label for="fpassword">PASSWORD:</label>
-            <input type="password" name="password" class="form-control"  required="required" placeholder="Password" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject">
+            <label for="password">CHOOSE PASSWORD:</label>
+            <input type="password" name="password" class="form-control"  
+            required="required" placeholder="Password"
+            pattern=".{8,}">
             <div class="validate"></div>
           </div>
+          
+          <div class="form-group">
+            <label for="retypepassword">RE-TYPE PASSWORD:</label>
+            <input type="password" name="retypepassword" class="form-control"  
+            required="required" placeholder="Please repeat password"
+            pattern=".{8,}">
+            <div class="validate"></div>
+          </div>        
   
           <div class="form-group">
-            <label for="fnoregistered">Already registered?</label>
+            <label for="noregistered">Already registered?</label>
             <a href="<%= request.getContextPath()%>/login.jsp" style="form-control">Log in ></a>          
           </div> 
 
           <div class="loading"></div>
           <div class="error-message"></div>
+          <div class="sent-message">Your account has been registered. Thank you!</div>
             
           <div class="form-send">
-            <input type="hidden" name="action" value="registerin">
+            <!--  <input type="hidden" name="action" value="registerin">-->
             <button type="submit" class="btn btn-theme btn-white mt30">Create an Account</button>
           </div>
           
@@ -73,6 +80,7 @@
             <a href="<%= request.getContextPath()%>/index.jsp" style="form-control">Cancel ></a>          
           </div> 
           
+
         </form>			
 			
       <!-- /Register Form -->
