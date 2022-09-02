@@ -11,20 +11,22 @@ import com.kukvar.hibernate.entity.Address;
 import com.kukvar.hibernate.entity.User;
 import com.kukvar.hibernate.entity.UserInfo;
 import com.kukvar.hibernate.utils.HibernateUtil;
+import com.kukvar.model.SignedUser;
 
 public class UsersDAO {
 	SessionFactory factory = HibernateUtil.getSessionFactory();
 
-	public void registerUser(String first_name, String last_name, LocalDate dateBirth,
+	public int registerUser(String first_name, String last_name, LocalDate dateBirth,
 			Address homeAddress, Address billingAddress, String email, String password, String phone) {
 		Session session = factory.getCurrentSession();
 		Transaction txn = session.getTransaction();
+		int id = 0;
 		try {
 			txn.begin();
 			User user = new User(email, password, phone);
 			UserInfo userInfo = new UserInfo(first_name, last_name, dateBirth,
 			homeAddress, billingAddress, user);
-			session.save(userInfo);
+			id = (int) session.save(userInfo);
 			//session.persist(userInfo);
 			txn.commit();
 		} catch (Exception e) {
@@ -34,6 +36,7 @@ public class UsersDAO {
 			if(session != null) { 
 				session.close();  }
 		}
+		return id;
 	}		
 	
 	
@@ -132,6 +135,30 @@ public class UsersDAO {
 		}
 		return userInfo;		
 	}	
+	
+	public SignedUser getSignedUserFromUserInfo(int id) {
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
+		UserInfo userInfo = null;
+		SignedUser signedUser = null;
+		try {
+			txn.begin();
+			userInfo = session.get(UserInfo.class, id);
+			String stringId = Integer.toString(id);
+			String email = userInfo.getUser().getEmail();
+			String firstName = userInfo.getFirst_name();
+			String lastName = userInfo.getLast_name();
+			signedUser = new SignedUser(stringId, firstName, lastName, email, "", true) ;
+			txn.commit(); 
+		} catch (Exception e) {
+			e.printStackTrace();
+			if(txn != null) { txn.rollback(); }
+		} finally {
+			if(session != null) { 
+				session.close();  }	
+		}
+		return signedUser;		
+	}		
 
 	public User getUser(int id) {
 		Session session = factory.getCurrentSession();
@@ -151,16 +178,19 @@ public class UsersDAO {
 		return user;	
 	}
 	
-	public boolean validatePassword(String email, String password) {
+	
+	public int validatePassword(String email, String password) {
 		Session session = factory.getCurrentSession();
 		Transaction txn = session.getTransaction();
-		boolean valid = false;
+		//boolean valid = false;
+		int id = 0;
 		try {
 			txn.begin();
 			String queryString = "from users where email = '"+email+"'";
 			User user = ((User) session.createQuery(queryString).getSingleResult());
 			if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
-				valid = true;
+				//valid = true;
+				id = user.getId();
 			}
 			session.detach(user);
 			user.setPassword("*************************");
@@ -172,8 +202,8 @@ public class UsersDAO {
 			if(session != null) { 
 				session.close();  }	
 		}
-		return valid;
-	}	
+		return id;
+	}		
 	
 	public void updateUser(int id, String email, String password, String phone) {
 		Session session = factory.getCurrentSession();
