@@ -60,12 +60,12 @@
 <c:choose>
 
   <c:when test="${SignedTeamUser != null }">
-  <c:set var = "forestuser" scope = "session" value = "${SignedTeamUser.getEmail()}"/>
+  <c:set var = "forestuser" scope = "session" value = "${SignedTeamUser.getFirstName()}"/>
   <c:import url="/assets/include/teamnavbar.jsp"><c:param name="mytitle" value="Welcome ${forestuser}"></c:param></c:import>   
   </c:when>
   
   <c:when test="${SignedUser != null }">
-  <c:set var = "forestuser" scope = "session" value = "${SignedUser.getEmail()}"/>
+  <c:set var = "forestuser" scope = "session" value = "${SignedUser.getFirstName()}"/>
   <c:import url="/assets/include/customernavbar.jsp"><c:param name="mytitle" value="Welcome ${forestuser}"></c:param></c:import>   
   </c:when>
   
