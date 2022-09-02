@@ -29,13 +29,15 @@
         <div class="col-md-4 col-md-offset-4">
          <br/> 
         <div class="row">
-        <form class="form white-text" action="<%= request.getContextPath()%>/login" method="get">
+        
+        <form class="form white-text" action="<%= request.getContextPath()%>/login?action=signin" method="get">
           <div class="form-send">
             <input type="hidden" name="action" value="sign_with_google">
             <button type="submit" name="google" class="btn btn-theme btn-white mt30"  >Sign in with Google</button>
           </div>          
         </form>
         </div>
+        
         <div class="row">
          <form class="form white-text" action="<%= request.getContextPath()%>/login" method="get">
           <div class="form-send">
@@ -45,34 +47,32 @@
         </form> 
         </div>      
         <br/> 
+        
         <form class="form white-text" action="<%= request.getContextPath()%>/login?action=signin" method="POST">
 
           <p>${message}</p>
-          <p>${email}</p>
-          
                
           <div class="form-group">
              <label for="femail">Email:</label>
             <input type="email" name="email" class="form-control" required="required" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">
             <div class="validate"></div>
             </div>
+            
           <div class="form-group">
             <input type="checkbox" name="rememberme" title="Remember me" placeholder="Remember me"> <label for="frememberme">Remember me</label> 
             <div class="validate"></div>
-          </div>  
+          </div> 
+           
           <div class="form-group">
             <a href="#" style="form-control">Forgot password?</a>          
           </div>  
+          
           <div class="form-group">
             <label for="fpassword">Not registered yet?</label>
             <a href="register.jsp" style="form-control">Create a Happy Heart account ></a>          
           </div> 
-
-          <div class="loading"></div>
-          <div class="error-message"></div>
             
           <div class="form-send">
-            <input type="hidden" name="action" value="signin">
             <button type="submit" class="btn btn-theme btn-white mt30">Continue</button>
           </div>
           
