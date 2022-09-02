@@ -16,16 +16,18 @@ import com.kukvar.model.SignedUser;
 public class UsersDAO {
 	SessionFactory factory = HibernateUtil.getSessionFactory();
 
-	public int registerUser(String first_name, String last_name, LocalDate dateBirth,
-			Address homeAddress, Address billingAddress, String email, String password, String phone) {
+	public int registerUser(String first_name, String last_name
+			, LocalDate dateBirth
+			, String email, String password, String phone
+			, Address homeAddress, Address billingAddress) {	
+		
 		Session session = factory.getCurrentSession();
 		Transaction txn = session.getTransaction();
 		int id = 0;
 		try {
 			txn.begin();
 			User user = new User(email, password, phone);
-			UserInfo userInfo = new UserInfo(first_name, last_name, dateBirth,
-			homeAddress, billingAddress, user);
+			UserInfo userInfo = new UserInfo(first_name, last_name, dateBirth, email, phone, homeAddress, billingAddress, user);
 			id = (int) session.save(userInfo);
 			//session.persist(userInfo);
 			txn.commit();
@@ -77,8 +79,11 @@ public class UsersDAO {
 		return users;
 	}	
 
-	public void updateUserInformation(int id, String first_name, String last_name, LocalDate dateBirth,
-			Address homeAddress, Address billingAddress) {
+	public void updateUserInformation(int id, String first_name, String last_name
+			, LocalDate dateBirth
+			, String email, String phone
+			, Address homeAddress, Address billingAddress) {		
+		
 		Session session = factory.getCurrentSession();
 		Transaction txn = session.getTransaction();
 		try {
@@ -87,6 +92,8 @@ public class UsersDAO {
 			userInfo.setFirst_name(first_name);
 			userInfo.setLast_name(last_name);
 			userInfo.setDateBirth(dateBirth);
+			userInfo.setEmail(email);
+			userInfo.setPhone(phone);
 			userInfo.setHomeAddress(homeAddress);
 			userInfo.setBillingAddress(billingAddress);
 			txn.commit();
@@ -283,6 +290,26 @@ public class UsersDAO {
 			if(session != null) { 
 				session.close();  }	
 		}
+	}
+
+
+	public void updateUserHomeAddress(int id, Address homeAddress, Address billingAddress) {
+		// TODO Auto-generated method stub
+		Session session = factory.getCurrentSession();
+		Transaction txn = session.getTransaction();
+		try {
+			txn.begin();
+			UserInfo userInfo = session.get(UserInfo.class, id);
+			userInfo.setHomeAddress(homeAddress);
+			userInfo.setBillingAddress(billingAddress);
+			txn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			if(txn != null) { txn.rollback(); }
+		} finally {
+			if(session != null) { 
+				session.close();  }
+		}		
 	}
 
 }
