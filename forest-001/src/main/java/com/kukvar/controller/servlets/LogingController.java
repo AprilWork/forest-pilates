@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.kukvar.hibernate.DAO.UsersDAO;
+import com.kukvar.hibernate.entity.Address;
 import com.kukvar.hibernate.entity.User;
+import com.kukvar.hibernate.entity.UserInfo;
 import com.kukvar.model.SignedUser;
 
 import java.io.IOException;
@@ -44,23 +46,19 @@ public class LogingController extends HttpServlet {
 			response.sendRedirect("index.jsp");
 		}
 	}
-
-	private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("Logout handler... new session...as guest...");
-		request.getSession().invalidate();	
-		HttpSession newSession = request.getSession(true);
-		response.sendRedirect("index.jsp");
-	}
-
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getParameter("action");
 		switch (action) {
 		case "registerin": {
-			//System.out.println("doPost: register action");
 			register(request,response);
 			break;
-		}		
+		}	
+		case "registerinfo": {
+			registerinfo(request,response);
+			break;
+		}			
 		case "signin": {
 			signin(request,response);
 			break;
@@ -72,42 +70,79 @@ public class LogingController extends HttpServlet {
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + action);
 		}
+	}
+	
+	
+	private void registerinfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		// TODO Auto-generated method stub
+		int customerId = (int) request.getSession().getAttribute("customerId");
+		String email = request.getParameter("email");		
+		String phone = request.getParameter("phone");
 		
+		String firstname = request.getParameter("firstname");
+		String lastname = request.getParameter("lastname");	
+		
+		String street = request.getParameter("street");
+		String city = request.getParameter("city");	
+		String zipcode = request.getParameter("zipcode");	
+		
+		boolean sameaddress = request.getParameter("sameaddress") != null;
+		
+		try {
+			Address homeaddress = new Address(street, city, zipcode);
+			if (sameaddress) {
+				new UsersDAO().updateUserInformation(customerId, firstname, lastname, null, homeaddress, homeaddress);
+			} else {
+				// TODO different billing address
+				new UsersDAO().updateUserInformation(customerId, firstname, lastname, null, homeaddress, null);
+			}
+			request.getSession().setAttribute("firstname", firstname);
+			String message = "You are successfully registered. Please login in your account.";
+			request.getSession().setAttribute("message", message);
+			response.sendRedirect("login.jsp");
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.sendRedirect("registerinfo.jsp");
+		}
 	}
 
-	private void password(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		System.out.println("Logout handler... new session...as guest...");
+		request.getSession().invalidate();	
+		HttpSession newSession = request.getSession(true);
+		response.sendRedirect("index.jsp");
+	}
+
+	private void password(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		// TODO Auto-generated method stub
-		//String emailFromRequest = request.getParameter("email");
-		String emailFromAttribute = (String) request.getSession().getAttribute("email");
-		//System.out.println("email from request parameter:"+emailFromRequest);
-		System.out.println("email from attribute:"+emailFromAttribute);
-		if (validatePassword(emailFromAttribute, request.getParameter("password"))) {
+		String email = (String) request.getSession().getAttribute("email");
+		//System.out.println("email from attribute:"+email);
+		int id = validatePassword(email, request.getParameter("password"));
+		
+		if (id > 0) {
+			SignedUser signedUser = new UsersDAO().getSignedUserFromUserInfo(id);
 			//Invalidating session if any
 			request.getSession().invalidate();
 			HttpSession newSession = request.getSession(true);
 			newSession.setMaxInactiveInterval(300);
-			
-			//newSession.setAttribute("username", username);
-			newSession.setAttribute("email", emailFromAttribute);
-			SignedUser signedUser = new SignedUser(emailFromAttribute);
-
 			newSession.setAttribute("SignedUser",signedUser);
 			response.sendRedirect("welcome_user.jsp");	
 		} else {
+			request.getRequestDispatcher("login.jsp").forward(request, response);
 			
 		}
 	}
 	
-	private boolean validatePassword(String email,String password) {
+	private int validatePassword(String email,String password) {
 		if (email == null) {
-			return false;
+			return -1;
 		} else {
 		return new UsersDAO().validatePassword(email, password);
 		}
 	}
 
 	private void register(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String name = request.getParameter("name");
+		//String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String phone = request.getParameter("phone");
@@ -115,10 +150,13 @@ public class LogingController extends HttpServlet {
 		User user = new User( email, password, phone);
 		System.out.println("New Customer: "+user.toString());
 			try {
-				new UsersDAO().registerUser(name, name, null, null, null, email, password, phone);
-				String message = "You are successfully registered. Please login in your account.";
+				int customerId = new UsersDAO().registerUser(null, null, null, null, null, email, password, phone);
+				request.getSession().setAttribute("customerId", customerId);
+				String message = "Please complete all the required fields.";
 				request.getSession().setAttribute("message", message);
-				response.sendRedirect("login.jsp");
+				request.getSession().setAttribute("email", email);
+				request.getSession().setAttribute("phone", phone);
+				response.sendRedirect("registerinfo.jsp");				
 			} catch (Exception e) {
 				e.printStackTrace();
 				response.sendRedirect("register.jsp");
