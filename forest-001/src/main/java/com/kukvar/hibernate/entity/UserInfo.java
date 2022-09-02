@@ -26,6 +26,10 @@ public class UserInfo {
 	private String last_name;	
 	@Column(name="date_birth")
 	private LocalDate dateBirth;
+	@Column(name="email" , nullable=false, unique = true)
+	private String email;	
+	@Column(name="phone", nullable=false, unique = true)
+	private String phone;	
 
 	@Embedded
 	@AttributeOverrides( {
@@ -58,11 +62,37 @@ public class UserInfo {
 	 * @param billingAddress
 	 * @param user
 	 */
+/*	
 	public UserInfo(String first_name, String last_name, LocalDate dateBirth,
 			Address homeAddress, Address billingAddress, User user) {
 		this.first_name = first_name;
 		this.last_name = last_name;
 		this.dateBirth = dateBirth;
+		this.homeAddress = homeAddress;
+		this.billingAddress = billingAddress;
+		this.user = user;
+	}
+*/	
+	
+
+	/**
+	 * @param first_name
+	 * @param last_name
+	 * @param dateBirth
+	 * @param email
+	 * @param phone
+	 * @param homeAddress
+	 * @param billingAddress
+	 * @param user
+	 */
+	public UserInfo(String first_name, String last_name, LocalDate dateBirth, String email, String phone,
+			Address homeAddress, Address billingAddress, User user) {
+		super();
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.dateBirth = dateBirth;
+		this.email = email;
+		this.phone = phone;
 		this.homeAddress = homeAddress;
 		this.billingAddress = billingAddress;
 		this.user = user;
@@ -121,6 +151,24 @@ public class UserInfo {
 
 	public void setBillingAddress(Address billingAddress) {
 		this.billingAddress = billingAddress;
+	}
+	
+	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public User getUser() {
