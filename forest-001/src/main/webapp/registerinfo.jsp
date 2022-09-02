@@ -9,7 +9,7 @@
   <div id="blue">
     <div class="container">
       <div class="row">
-        <h3>Create an Account.</h3>
+        <h3>Add User Info.</h3>
       </div>
       <!-- /row -->
     </div>
@@ -95,21 +95,16 @@
             checked="checked">
           <div class="validate"></div>
         </div>                       
-         
+
+          <div class="form-send">
+            <button type="submit" class="btn btn-theme btn-white mt30">ADD USER INFO</button>
+          </div>
+          
           <div class="form-group">
             <label for="noregistered">Already registered?</label>
             <a href="<%= request.getContextPath()%>/login.jsp" style="form-control">Log in ></a>          
           </div> 
-
-          <div class="loading"></div>
-          <div class="error-message"></div>
-          <div class="sent-message">Your account has been registered. Thank you!</div>
-            
-          <div class="form-send">
-            <!--  <input type="hidden" name="action" value="registerin">-->
-            <button type="submit" class="btn btn-theme btn-white mt30">ADD USER INFO</button>
-          </div>
-          
+                     
           <div class="form-group">
             <br/>
             <a href="<%= request.getContextPath()%>/index.jsp" style="form-control">Cancel ></a>          
