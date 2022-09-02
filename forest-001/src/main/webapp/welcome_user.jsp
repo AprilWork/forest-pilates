@@ -9,7 +9,7 @@
   <div id="blue">
     <div class="container">
       <div class="row">
-        <h3>Welcome User.</h3>
+        <h3>Welcome ${SignedUser.getFirstName()}</h3>
       </div>
       <!-- /row -->
     </div>
