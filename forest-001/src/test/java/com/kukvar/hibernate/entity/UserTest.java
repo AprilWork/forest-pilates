@@ -38,14 +38,14 @@ class UserTest {
 
 	@Test
 	final void testAddUser() {
-		//fail("Not yet implemented"); // TODO
 		txn = session.getTransaction();
 		try {
 			txn.begin();
 			User user = new User("testUser3@yahoo.com", "tested","1111111111");
 			Address address = new Address("Green str", "Orange", "45678");
-			UserInfo userInfo = new UserInfo("John", "Doe", LocalDate.parse("2022-05-16"), address, address, user);
-			//UserInfo userInfo = new UserInfo(null, null, null, null, null, user);
+			UserInfo userInfo = new UserInfo("John","Doe", LocalDate.parse("2022-05-16")
+					, "testUser3@yahoo.com", "1111111111"
+					, address, address, user);	
 			session.persist(userInfo);
 			assertNotNull(userInfo.getUser(),"The user do not added");
 			assertNotNull(session.get(UserInfo.class, user.getId()),"The user index do not equal to userInfo index.");
