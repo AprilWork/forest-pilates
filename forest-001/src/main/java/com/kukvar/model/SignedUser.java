@@ -1,24 +1,18 @@
 package com.kukvar.model;
 
 public class SignedUser {
-	public String id, email, picture;
+	public String id, firstName, lastName, email, picture;
 	private boolean verified_email;
 	
 	public SignedUser() {
 		super();
 	}
-	
 
-	public SignedUser(String email) {
-		super();
-		this.email = email;
-	}
-
-
-
-	public SignedUser(String id, String email, String picture, boolean verified_email) {
+	public SignedUser(String id, String firstName, String lastName, String email, String picture, boolean verified_email) {
 		super();
 		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.email = email;
 		this.picture = picture;
 		this.verified_email = verified_email;
@@ -30,6 +24,22 @@ public class SignedUser {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getEmail() {
@@ -58,9 +68,31 @@ public class SignedUser {
 
 	@Override
 	public String toString() {
-		return "UserForGoogle [id=" + id + ", email=" + email + ", picture=" + picture + ", verified_email=" + verified_email + "]";
+		return "SignedUser [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + "]";
 	}
 	
+	
+	
+	
+/*
+	public SignedUser(String email) {
+		super();
+		this.email = email;
+	}
+*/
+
+
+
+/*
+	public SignedUser(String id, String email, String picture, boolean verified_email) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.picture = picture;
+		this.verified_email = verified_email;
+	}
+*/
+
 	
 	
 }
