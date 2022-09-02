@@ -38,6 +38,9 @@ public class LogingController extends HttpServlet {
 		case "register" :
 			response.sendRedirect("register.jsp");
 			break;
+		case "addresses" :
+			addressesForm(request,response);
+			break;			
 		case "sign_with_google": {
 			response.sendRedirect("login.jsp");
 			break;
@@ -46,7 +49,7 @@ public class LogingController extends HttpServlet {
 			response.sendRedirect("index.jsp");
 		}
 	}
-	
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getParameter("action");
@@ -58,7 +61,11 @@ public class LogingController extends HttpServlet {
 		case "registerinfo": {
 			registerinfo(request,response);
 			break;
-		}			
+		}		
+		case "addresses": {
+			editHomeAddress(request,response);
+			break;
+		}				
 		case "signin": {
 			signin(request,response);
 			break;
@@ -71,8 +78,40 @@ public class LogingController extends HttpServlet {
 			throw new IllegalArgumentException("Unexpected value: " + action);
 		}
 	}
+
 	
+	private void addressesForm(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		int id = Integer.parseInt(((SignedUser)request.getSession().getAttribute("SignedUser")).getId());
+		UserInfo userInfo = new UsersDAO().getUserInfo(id);
+		Address homeAddress = userInfo.getHomeAddress();
+		request.setAttribute("street", homeAddress.getStreet());
+		request.setAttribute("city", homeAddress.getCity());
+		request.setAttribute("zipcode", homeAddress.getZipcode());
+		request.getRequestDispatcher("addresses.jsp").forward(request, response);
+	}	
 	
+	private void editHomeAddress(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String street = request.getParameter("street");
+		String city = request.getParameter("city");	
+		String zipcode = request.getParameter("zipcode");	
+		boolean sameaddress = request.getParameter("sameaddress") != null;
+		int id = Integer.parseInt(((SignedUser)request.getSession().getAttribute("SignedUser")).getId());
+		
+		try {
+			Address homeAddress = new Address(street, city, zipcode);
+			if (sameaddress) {
+				new UsersDAO().updateUserHomeAddress(id,homeAddress,homeAddress);
+			} else {
+				// TODO different billing address
+				new UsersDAO().updateUserHomeAddress(id,homeAddress, null);
+			}
+			response.sendRedirect("welcome_user.jsp");
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.sendRedirect("registerinfo.jsp");
+		}
+	}
+
 	private void registerinfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// TODO Auto-generated method stub
 		int customerId = (int) request.getSession().getAttribute("customerId");
@@ -91,12 +130,11 @@ public class LogingController extends HttpServlet {
 		try {
 			Address homeaddress = new Address(street, city, zipcode);
 			if (sameaddress) {
-				new UsersDAO().updateUserInformation(customerId, firstname, lastname, null, homeaddress, homeaddress);
+				new UsersDAO().updateUserInformation(customerId, firstname, lastname, null, email, phone, homeaddress, homeaddress);
 			} else {
 				// TODO different billing address
-				new UsersDAO().updateUserInformation(customerId, firstname, lastname, null, homeaddress, null);
+				new UsersDAO().updateUserInformation(customerId, firstname, lastname, null, email, phone, homeaddress, null);
 			}
-			request.getSession().setAttribute("firstname", firstname);
 			String message = "You are successfully registered. Please login in your account.";
 			request.getSession().setAttribute("message", message);
 			response.sendRedirect("login.jsp");
@@ -150,7 +188,7 @@ public class LogingController extends HttpServlet {
 		User user = new User( email, password, phone);
 		System.out.println("New Customer: "+user.toString());
 			try {
-				int customerId = new UsersDAO().registerUser(null, null, null, null, null, email, password, phone);
+				int customerId = new UsersDAO().registerUser(null, null, null, email, password, phone, null, null);
 				request.getSession().setAttribute("customerId", customerId);
 				String message = "Please complete all the required fields.";
 				request.getSession().setAttribute("message", message);
