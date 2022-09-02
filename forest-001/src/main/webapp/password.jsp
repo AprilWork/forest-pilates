@@ -29,12 +29,12 @@
         <div class="col-md-4 col-md-offset-4">
          <br/>      
         <br/> 
+        
         <form class="form white-text" action="<%= request.getContextPath()%>/login?action=password" method="POST">
 
           <div class="form-group">
           
             <p>${message}</p>
-            <p>${email}</p>
             
             <label for="fpassword">Password:</label>
             <input type="password" name="password" class="form-control"  required="required" placeholder="Password" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject">
@@ -51,12 +51,8 @@
             <label for="fpassword">Not registered yet?</label>
             <a href="#" style="form-control">Create a Happy Heart account ></a>          
           </div> 
-
-          <div class="loading"></div>
-          <div class="error-message"></div>
             
           <div class="form-send">
-            <input type="hidden" name="action" value="password">
             <button type="submit" class="btn btn-theme btn-white mt30">Sign In</button>
           </div>
           
