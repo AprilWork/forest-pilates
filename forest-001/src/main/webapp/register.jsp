@@ -65,13 +65,8 @@
             <label for="noregistered">Already registered?</label>
             <a href="<%= request.getContextPath()%>/login.jsp" style="form-control">Log in ></a>          
           </div> 
-
-          <div class="loading"></div>
-          <div class="error-message"></div>
-          <div class="sent-message">Your account has been registered. Thank you!</div>
             
           <div class="form-send">
-            <!--  <input type="hidden" name="action" value="registerin">-->
             <button type="submit" class="btn btn-theme btn-white mt30">Create an Account</button>
           </div>
           
