@@ -1,20 +1,17 @@
 package com.kukvar.model;
 
 public class SignedTeamUser {
-	public String id, email, picture;
+	public String id,  firstName, lastName, email, picture;
 	private boolean verified_email;
 	
 	public SignedTeamUser() {
 		super();
 	}
 	
-
 	public SignedTeamUser(String email) {
 		super();
 		this.email = email;
 	}
-
-
 
 	public SignedTeamUser(String id, String email, String picture, boolean verified_email) {
 		super();
@@ -55,12 +52,26 @@ public class SignedTeamUser {
 	public void setVerified_email(boolean verified_email) {
 		this.verified_email = verified_email;
 	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
 	@Override
 	public String toString() {
 		return "UserForGoogle [id=" + id + ", email=" + email + ", picture=" + picture + ", verified_email=" + verified_email + "]";
 	}
-	
-	
-	
+		
 }
