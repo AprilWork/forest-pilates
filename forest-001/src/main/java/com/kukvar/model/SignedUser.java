@@ -1,14 +1,15 @@
 package com.kukvar.model;
 
 public class SignedUser {
-	public String id, firstName, lastName, email, picture;
+	public int id;
+	public String firstName, lastName, email, picture;
 	private boolean verified_email;
 	
 	public SignedUser() {
 		super();
 	}
 
-	public SignedUser(String id, String firstName, String lastName, String email, String picture, boolean verified_email) {
+	public SignedUser(int id, String firstName, String lastName, String email, String picture, boolean verified_email) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -18,11 +19,11 @@ public class SignedUser {
 		this.verified_email = verified_email;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

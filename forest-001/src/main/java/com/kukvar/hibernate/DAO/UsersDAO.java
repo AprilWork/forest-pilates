@@ -151,11 +151,10 @@ public class UsersDAO {
 		try {
 			txn.begin();
 			userInfo = session.get(UserInfo.class, id);
-			String stringId = Integer.toString(id);
 			String email = userInfo.getUser().getEmail();
 			String firstName = userInfo.getFirst_name();
 			String lastName = userInfo.getLast_name();
-			signedUser = new SignedUser(stringId, firstName, lastName, email, "", true) ;
+			signedUser = new SignedUser(id, firstName, lastName, email, "", true) ;
 			txn.commit(); 
 		} catch (Exception e) {
 			e.printStackTrace();

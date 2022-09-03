@@ -81,7 +81,7 @@ public class LogingController extends HttpServlet {
 
 	
 	private void addressesForm(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		int id = Integer.parseInt(((SignedUser)request.getSession().getAttribute("SignedUser")).getId());
+		int id = ((SignedUser)request.getSession().getAttribute("SignedUser")).getId();
 		UserInfo userInfo = new UsersDAO().getUserInfo(id);
 		Address homeAddress = userInfo.getHomeAddress();
 		request.setAttribute("street", homeAddress.getStreet());
@@ -95,7 +95,7 @@ public class LogingController extends HttpServlet {
 		String city = request.getParameter("city");	
 		String zipcode = request.getParameter("zipcode");	
 		boolean sameaddress = request.getParameter("sameaddress") != null;
-		int id = Integer.parseInt(((SignedUser)request.getSession().getAttribute("SignedUser")).getId());
+		int id = ((SignedUser)request.getSession().getAttribute("SignedUser")).getId();
 		
 		try {
 			Address homeAddress = new Address(street, city, zipcode);
