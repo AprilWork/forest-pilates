@@ -14,8 +14,10 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import com.kukvar.hibernate.DAO.CategoryDAO;
 import com.kukvar.hibernate.DAO.FilesDAO;
 import com.kukvar.hibernate.DAO.GroupsDAO;
+import com.kukvar.hibernate.entity.Category;
 import com.kukvar.hibernate.entity.Files;
 import com.kukvar.hibernate.entity.Group;
 
@@ -71,6 +73,8 @@ public class GroupsHandler extends HttpServlet {
 	}
 
 	private void createGroupForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<Category> listCategory = new CategoryDAO().listCategory();
+		request.setAttribute("listCategory", listCategory );
 		request.getRequestDispatcher("newGroup.jsp").forward(request, response);
 	}
 
@@ -112,21 +116,29 @@ public class GroupsHandler extends HttpServlet {
 	}
 
 	private void createGroup(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//int groupId = Integer.parseInt(request.getParameter("groupId"));
+		// TODO create method createGroup of class GroupsHandler
+		String classTypeName = request.getParameter("class_type");
 		String className = request.getParameter("className");
 		String description = request.getParameter("description");
-		String nameImageFile = request.getParameter("nameImageFile");
-		if ((nameImageFile == null ) || (nameImageFile == "" ) ) {
-			nameImageFile = "default.jpg";
-		} else {
+
+		Category category = null;
+		Group group = null;
+		try {
+			category = new CategoryDAO().getCategory(classTypeName);
+			if (category != null) {
+				group = new Group(className, description, "default.jpg", category);
+			} else {
+				group = new Group(className, description, "default.jpg", new Category(classTypeName));
+			}
 			
+			new GroupsDAO().addGroupDetails(group);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-		//Group group = new Group(className, description,nameImageFile);
-		//new GroupsDAO().addGroupDetails(group);
-		//response.sendRedirect("index.jsp");
-		response.sendRedirect(request.getContextPath()+"/classes?action=listingGroups");
-		//request.getRequestDispatcher("listEditedGroups.jsp").
-		//listingGroupsForEditing(request, response);
+		
+		request.getRequestDispatcher("index.jsp").forward(request, response);
+
 	}
 	
 	/*

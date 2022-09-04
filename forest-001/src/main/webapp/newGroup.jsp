@@ -25,55 +25,42 @@
 			<p></p>
 			<!-- Register Form -->
         <form class="form white-text" action="<%= request.getContextPath()%>/classes?action=createGroup" method="POST">
+
+				<div class="form-group">
+					<label for="class_type">CATEGORY:</label> 
+					<input
+						type='text' name="class_type" list='listid' class="form-control"
+						required="required" placeholder="Enter or choose category of class">
+					<datalist id='listid'>
+							<c:forEach items="${listCategory}" var="category" >
+								<option  value="${category.name}"></option>
+							</c:forEach>
+					</datalist>
+					<div class="validate"></div>
+				</div>
 				
-					<div class="form-group">
+				<div class="form-group">
+				<label for="className">NAME:</label> 
 						<input type="text" name="className"
-							class="form-control" required="required" placeholder="Enter your class name"
-							data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+							class="form-control" required="required" placeholder="Enter your class name">
 						<div class="validate"></div>
 					</div>
 
 	        <div class="form-group">
+	        <label for="description">DESCRIPTION:</label> 
 	              <textarea class="form-control" name="description" 
 	              required="required" placeholder="Description of Class" rows="5"
 	              autocapitalize="sentences" 
-	              data-rule="required" data-msg="Please write something about your class"></textarea>
+	              ></textarea>
 	        <div class="validate"></div>
 	        </div>
 
-				<div class="form-group">
-					<input type="file" name="files" class="form-control"
-					  
-						placeholder="Enter your image file name">
-						
-					<div class="validate"></div>
-				</div>
-
-
-				<div class="loading"></div>
-          <div class="error-message"></div>
-            
           <div class="form-send">
-            <button type="submit"  class="btn btn-theme btn-white mt30">REGISTER</button>
+            <button type="submit"  class="btn btn-theme btn-white mt30">CREATE NEW CLASS</button>
           </div>
-          
-          <div class="form-group">
-            <br/>
-            <a href="<%= request.getContextPath()%>/classes?action=listingGroups" style="form-control">Cancel ></a>          
-          </div> 
-          
+                    
         </form>			
 			
-      <!-- /Register Form -->
-      
-      <!-- Image Upload Form -->
-				<form class="form white-text" action="classes?action=filesUpload" method="get" enctype="multipart/form-data">
-				Select image <input type="file" name="files" placeholder="Enter your image file name">/>
-				<input type="hidden" name="action" value="filesUpload" >
-				<input type="submit" value="upload" />
-				</form>
-				<br/>      
-      <!-- /Image Upload Form -->
 		</div>
 	</div>
 </div>
