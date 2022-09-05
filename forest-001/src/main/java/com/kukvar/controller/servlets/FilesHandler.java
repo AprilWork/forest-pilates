@@ -23,10 +23,10 @@ public class FilesHandler extends HttpServlet {
 	
 //TODO Need to fix image path
 	
-	//public String path = "c:/images/";
-	public String assetsImagePath = "assets/img/uploaded/";
-	public String realPath = "C:/Users/irade/git/Booking/pilates/src/main/webapp/";
-	public String path = "C:/Users/irade/git/Booking/pilates/src/main/webapp/assets/img/uploaded/";
+	public String path = "c:/images/";
+	//public String assetsImagePath = "assets/img/uploaded/";
+	//public String realPath = "C:/Users/irade/git/Booking/pilates/src/main/webapp/";
+	//public String path = "C:/Users/irade/git/Booking/pilates/src/main/webapp/assets/img/uploaded/";
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -103,7 +103,7 @@ public class FilesHandler extends HttpServlet {
 		int fileId =  Integer.parseInt(request.getParameter("fileId"));
 		Files file = new FilesDAO().getFile(fileId);
 		request.setAttribute("file", file);
-		request.setAttribute("path", assetsImagePath);
+		request.setAttribute("path", path);
 		request.getRequestDispatcher("viewImage.jsp").forward(request,response);
 	}
 
@@ -112,7 +112,7 @@ public class FilesHandler extends HttpServlet {
 		
 		List<Files> files = new FilesDAO().listFiles();
 		request.setAttribute("files", files);
-		request.setAttribute("path", assetsImagePath);
+		request.setAttribute("path", path);
 		request.getRequestDispatcher("listFiles.jsp").forward(request, response);
 		
 	}
