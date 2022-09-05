@@ -31,10 +31,10 @@ public class GroupsHandler extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = -3831488347437627401L;
-	//public String path = "c:/images/"; 
-	public final String assetsImagePath = "assets/img/uploaded/";
-	public final String realPath = "C:/Users/irade/git/Booking/pilates/src/main/webapp/";
-	public final String path = "C:/Users/irade/git/Booking/pilates/src/main/webapp/assets/img/uploaded/";
+	public String path = "c:/images/"; 
+	//public final String assetsImagePath = "assets/img/uploaded/";
+	//public final String realPath = "C:/Users/irade/git/Booking/pilates/src/main/webapp/";
+	//public final String path = "C:/Users/irade/git/Booking/pilates/src/main/webapp/assets/img/uploaded/";
 
     public GroupsHandler() {
         super();
@@ -47,6 +47,10 @@ public class GroupsHandler extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
 		switch (action) {
+		case "createCategory": {
+			createCategoryForm(request, response);
+			break;
+		}	
 		case "viewGroups": {
 			listingGroups(request, response);
 			break;
@@ -72,6 +76,10 @@ public class GroupsHandler extends HttpServlet {
 		}
 	}
 
+	private void createCategoryForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("newGategory.jsp").forward(request, response);
+	}
+
 	private void createGroupForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Category> listCategory = new CategoryDAO().listCategory();
 		request.setAttribute("listCategory", listCategory );
@@ -88,7 +96,7 @@ public class GroupsHandler extends HttpServlet {
 	private void listingGroupsForEditing(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Group> groups = new GroupsDAO().listGroups();
 		request.setAttribute("groups", groups);
-		request.setAttribute("path", assetsImagePath);
+		request.setAttribute("path", path);
 		request.getRequestDispatcher("listEditedGroups.jsp").forward(request, response);		
 		
 	}
@@ -96,7 +104,7 @@ public class GroupsHandler extends HttpServlet {
 	private void listingGroups(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Group> groups = new GroupsDAO().listGroups();
 		request.setAttribute("groups", groups);
-		request.setAttribute("path", assetsImagePath);
+		request.setAttribute("path", path);
 		request.getRequestDispatcher("listGroups.jsp").forward(request, response);
 	}
 
@@ -106,6 +114,10 @@ public class GroupsHandler extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
 		switch (action) {
+		case "createCategory": {
+			createCategory(request, response);
+			break;
+		}			
 		case "createGroup": {
 			createGroup(request, response);
 			break;
@@ -113,6 +125,16 @@ public class GroupsHandler extends HttpServlet {
 		default:
 			request.getRequestDispatcher("index.jsp").forward(request, response);
 		}
+	}
+
+	private void createCategory(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String name = request.getParameter("name");
+		try {
+			new CategoryDAO().addCategoryDetails(new Category(name));
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		request.getRequestDispatcher("index.jsp").forward(request, response);
 	}
 
 	private void createGroup(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
