@@ -2,6 +2,7 @@ package com.kukvar.controller.servlets;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,7 +47,7 @@ public class TeamAreaController extends HttpServlet {
 		} else {
 			switch (action) {
 			case "login":
-				response.sendRedirect("loginTeam.jsp");
+				login(request,response);
 				break;
 			case "logout":
 				logout(request,response);
@@ -55,6 +56,27 @@ public class TeamAreaController extends HttpServlet {
 				response.sendRedirect("loginTeam.jsp");
 				break;
 			}
+		}
+	}
+
+	private void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		// TODO Auto-generated method stub
+		String teamEmail = null, sessionID = null;
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("teamEmail")) {
+					teamEmail = cookie.getValue();
+				}
+				if (cookie.getName().equals("JSESSIONID")) {
+					sessionID = cookie.getValue();
+				}
+			}
+		}
+		if (sessionID == null || teamEmail == null) {
+			response.sendRedirect("loginTeam.jsp");
+		}		else {
+			request.getRequestDispatcher("index.jsp").forward(request, response);
 		}
 	}
 
@@ -90,9 +112,11 @@ public class TeamAreaController extends HttpServlet {
 			request.getSession().invalidate();
 			HttpSession newSession = request.getSession(true);
 			newSession.setMaxInactiveInterval(300);
-			newSession.setAttribute("email", email);
+			//newSession.setAttribute("email", email);
 			SignedTeamUser signedTeamUser = new SignedTeamUser(email);
 			newSession.setAttribute("SignedTeamUser",signedTeamUser);
+			Cookie teamEmail = new Cookie("teamEmail", email);
+	    response.addCookie(teamEmail);
 			response.sendRedirect("index.jsp");	
 		} else {
 			response.sendRedirect("loginTeam.jsp");	
