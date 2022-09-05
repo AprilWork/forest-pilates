@@ -24,21 +24,29 @@
         <div class="hline"></div>
 			<p></p>
 			<!-- Register Form -->
-        <form class="form white-text" action="<%= request.getContextPath()%>/classes?action=createGroup" method="POST">
 
-				<div class="form-group">
-					<label for="class_type">CATEGORY:</label> 
-					<input
-						type='text' name="class_type" list='listid' class="form-control"
-						required="required" placeholder="Enter or choose category of class">
-					<datalist id='listid'>
-							<c:forEach items="${listCategory}" var="category" >
-								<option  value="${category.name}"></option>
-							</c:forEach>
-					</datalist>
-					<div class="validate"></div>
-				</div>
-				
+        <form class="form white-text" action="<%= request.getContextPath()%>/classes?action=createGroup" method="POST">
+    
+          <div class="form-group"> 
+           <label for="class_type">CATEGORY:</label>
+           <!-- 
+          <input
+            type='text' name="class_type" id="class_type" 
+            required="required" placeholder="Enter or choose category of class"
+            list="category_list"> 
+           -->  
+            <select name="class_type" id="category_list" class="form-control"
+            required="required" >
+              <c:forEach items="${listCategory}" var="category" >
+                <option  value="${category.name}">${category.name}</option>
+              </c:forEach>
+            </select>
+          <!-- If other, please specify new category: -->         
+          <!-- If other, please specify new category: -->
+          <div class="validate"></div>
+        </div>	
+        
+        
 				<div class="form-group">
 				<label for="className">NAME:</label> 
 						<input type="text" name="className"
@@ -54,6 +62,20 @@
 	              ></textarea>
 	        <div class="validate"></div>
 	        </div>
+	        
+	        <div class="form-group">
+	        <label for="image">PICTURE:</label> 
+            <select name="image" id="image_list" class="form-control"
+            required="required">
+              <option ></option>
+              <c:forEach items="${listImages}" var="category" >
+                <option  value="${listImages.name}">${listImages.name}</option>
+              </c:forEach>
+            </select>
+	              <img alt="default.jpg" src="assets/img/uploaded/default.jpg" height="60">
+	              
+	        <div class="validate"></div>
+	        </div>	        
 
           <div class="form-send">
             <button type="submit"  class="btn btn-theme btn-white mt30">CREATE NEW CLASS</button>
