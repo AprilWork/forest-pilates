@@ -30,7 +30,7 @@
          <br/> 
         <div class="row">
         
-        <form class="form white-text" action="<%= request.getContextPath()%>/login?action=signin" method="get">
+        <form class="form" action="<%= request.getContextPath()%>/login?action=signin" method="get">
           <div class="form-send">
             <input type="hidden" name="action" value="sign_with_google">
             <button type="submit" name="google" class="btn btn-theme btn-white mt30"  >Sign in with Google</button>
@@ -39,7 +39,7 @@
         </div>
         
         <div class="row">
-         <form class="form white-text" action="<%= request.getContextPath()%>/login" method="get">
+         <form class="form" action="<%= request.getContextPath()%>/login" method="get">
           <div class="form-send">
             <input type="hidden" name="action" value="sign_with_facebook">
             <button type="submit" name="facebook" class="btn btn-theme btn-white mt30">Sign in with Facebook</button>
@@ -48,12 +48,12 @@
         </div>      
         <br/> 
         
-        <form class="form white-text" action="<%= request.getContextPath()%>/login?action=signin" method="POST">
+        <form class="form" action="<%= request.getContextPath()%>/login?action=signin" method="POST">
 
           <p>${message}</p>
                
           <div class="form-group">
-             <label for="femail">Email:</label>
+             <label for="email">Email:</label>
             <input type="email" name="email" class="form-control" required="required" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">
             <div class="validate"></div>
             </div>
@@ -68,7 +68,7 @@
           </div>  
           
           <div class="form-group">
-            <label for="fpassword">Not registered yet?</label>
+            <label for="password">Not registered yet?</label>
             <a href="register.jsp" style="form-control">Create a Happy Heart account ></a>          
           </div> 
             
