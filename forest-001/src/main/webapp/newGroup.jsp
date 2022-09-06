@@ -25,39 +25,44 @@
 			<p></p>
 			<!-- Register Form -->
 
-        <form class="form white-text" action="<%= request.getContextPath()%>/classes?action=createGroup" method="POST">
-    
-          <div class="form-group"> 
-           <label for="class_type">CATEGORY:</label>
-           <!-- 
-          <input
-            type='text' name="class_type" id="class_type" 
-            required="required" placeholder="Enter or choose category of class"
-            list="category_list"> 
-           -->  
+        
+          <div class="form-inline input-group-addon">
+          
+           <label for="class_type">SELECT CATEGORY: </label>
+           
             <select name="class_type" id="category_list" class="form-control"
-            required="required" >
+            form="create_group_form">
               <c:forEach items="${listCategory}" var="category" >
-                <option  value="${category.name}">${category.name}</option>
+
+                  <option  value="${category.name}">${category.name}</option>
+
               </c:forEach>
             </select>
-          <!-- If other, please specify new category: -->         
-          <!-- If other, please specify new category: -->
-          <div class="validate"></div>
-        </div>	
+            
+	           <label for="new_class_type">If other, please specify: </label>
+	           <input type="text" name="new_class_type" 
+	           placeholder="Please specify new category" 
+	           form="create_group_form"
+	           class="form-control">
+	           
+          </div>
         
-        
+        <form name="create_group_form" id="create_group_form" class="form white-text" action="<%= request.getContextPath()%>/classes?action=createGroup" method="POST">
+    
 				<div class="form-group">
 				<label for="className">NAME:</label> 
 						<input type="text" name="className"
-							class="form-control" required="required" placeholder="Enter your class name">
+							class="form-control" 
+							required="required" 
+							placeholder="Enter your class name">
 						<div class="validate"></div>
 					</div>
 
 	        <div class="form-group">
 	        <label for="description">DESCRIPTION:</label> 
-	              <textarea class="form-control" name="description" 
-	              required="required" placeholder="Description of Class" rows="5"
+	              <textarea class="form-control" name="description"
+	              required="required" 
+	              placeholder="Description of Class" rows="5"
 	              autocapitalize="sentences" 
 	              ></textarea>
 	        <div class="validate"></div>
@@ -65,8 +70,7 @@
 	        
 	        <div class="form-group">
 	        <label for="image">PICTURE:</label> 
-            <select name="image" id="image_list" class="form-control"
-            required="required">
+            <select name="image" id="image_list" class="form-control">
               <option ></option>
               <c:forEach items="${listImages}" var="category" >
                 <option  value="${listImages.name}">${listImages.name}</option>

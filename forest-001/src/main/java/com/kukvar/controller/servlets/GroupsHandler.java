@@ -138,29 +138,33 @@ public class GroupsHandler extends HttpServlet {
 	}
 
 	private void createGroup(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO create method createGroup of class GroupsHandler
 		String classTypeName = request.getParameter("class_type");
+		String newClassType = request.getParameter("new_class_type");
 		String className = request.getParameter("className");
 		String description = request.getParameter("description");
 
 		Category category = null;
 		Group group = null;
+		
 		try {
-			category = new CategoryDAO().getCategory(classTypeName);
-			if (category != null) {
-				group = new Group(className, description, "default.jpg", category);
+			if (newClassType.isBlank()) {
+				category = new CategoryDAO().getCategory(classTypeName);
 			} else {
-				group = new Group(className, description, "default.jpg", new Category(classTypeName));
+				category = new CategoryDAO().getCategory(newClassType);
+				if (category == null) {
+					category = new Category(newClassType);
+					new CategoryDAO().addCategoryDetails(category);
+				}				
 			}
 			
-			new GroupsDAO().addGroupDetails(group);
-			
+			group = new Group(className, description, "default.jpg", category);
+			new GroupsDAO().addGroupDetails(group);			
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
-		
-		request.getRequestDispatcher("index.jsp").forward(request, response);
 
+		listingGroupsForEditing(request,response);
 	}
 	
 	/*
